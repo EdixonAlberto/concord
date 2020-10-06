@@ -1,0 +1,14 @@
+{
+  "name": "monorepo-discord-bots",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "author": "Edixon Piña <edixonalbertto@gmail.com>",
+  "scripts": {
+    "concord": "yarn workspace @edixon/concord",
+    "devbot": "yarn workspace devbot run start"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}
