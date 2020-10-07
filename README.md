@@ -1,4 +1,4 @@
-# Monorepo - Discord bot
+# Monorepo - Discord Bots
 
 ## Technologies in use
 
