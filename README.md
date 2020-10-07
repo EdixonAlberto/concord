@@ -1,5 +1,9 @@
 # Monorepo - Discord Bots
 
+<div align="center">
+  <img src="./.github/discord-bots.jpeg" alt="discord bots" width="60%" style="border-radius: 15px;" />
+</div>
+
 ## Technologies in use
 
 - Typescript

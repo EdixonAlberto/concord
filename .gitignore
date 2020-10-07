@@ -6,3 +6,4 @@ dist
 # FILES
 *.log
 .env
+tsconfig.tsbuildinfo
