@@ -1,5 +1,6 @@
 import { loadConfig } from './loadConfig';
 import { Bot } from '@edixon/concord';
+import * as commands from './commands';
 
 async function main() {
   try {
@@ -7,7 +8,8 @@ async function main() {
 
     const bot = new Bot({
       prefix: '>',
-      token: global.config.discordToken
+      token: global.config.discordToken,
+      commands
     });
 
     await bot.start();

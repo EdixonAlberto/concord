@@ -6,7 +6,8 @@
   "author": "Edixon Piña <edixonalbertto@gmail.com>",
   "scripts": {
     "concord": "yarn workspace @edixon/concord",
-    "devbot": "yarn workspace devbot run start"
+    "devbot": "yarn workspace devbot",
+    "start": "yarn workspace devbot run start"
   },
   "workspaces": [
     "packages/*"
