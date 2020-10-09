@@ -1,5 +1,6 @@
 import { Message, MessageEmbed } from 'discord.js';
 import { colorsList } from '@ENUM';
+import { TEmbed, TField } from '@types';
 
 class BotResponse {
   private response: Message;
@@ -16,11 +17,7 @@ class BotResponse {
     color = colorsList.ok
   }: TEmbed): void {
     const embed = new MessageEmbed();
-    embed
-      .setAuthor(header)
-      .setTitle(title)
-      .setFooter(footer)
-      .setColor(color);
+    embed.setAuthor(header).setTitle(title).setFooter(footer).setColor(color);
 
     if (typeof detail === 'string') embed.setDescription(detail);
     else {
@@ -48,4 +45,4 @@ class BotResponse {
   }
 }
 
-export default BotResponse;
+export { BotResponse };

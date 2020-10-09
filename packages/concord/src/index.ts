@@ -1,4 +1,4 @@
-import BotResponse from './BotResponse';
 import { Bot } from './Bot';
+import { TCommand } from '@types';
 
-export { Bot, BotResponse };
+export { Bot, TCommand };

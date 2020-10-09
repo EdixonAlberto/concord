@@ -1,16 +1,22 @@
-type TOptions = {
+export type TOptions = {
   prefix: string;
   token: string;
+  commands: object;
 };
 
-type TContent = {
+export type TContent = {
   prefix: string;
-  command: import('@ENUM').commandsList;
+  command: import('@ENUM').commandsList & string;
   params: Array<string>;
   message: () => import('discord.js').Message;
 };
 
-type TEmbed = {
+export type TCommand = {
+  content: TContent;
+  response: import('./BotResponse').BotResponse;
+};
+
+export type TEmbed = {
   header: string;
   title: string;
   detail: string | TTable;
@@ -18,9 +24,9 @@ type TEmbed = {
   color?: string;
 };
 
-type TTable = Array<TField>;
+export type TTable = Array<TField>;
 
-type TField = {
+export type TField = {
   title: string;
   content: string;
   fieldType: 'row' | 'column';

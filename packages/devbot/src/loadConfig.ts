@@ -11,5 +11,5 @@ export async function loadConfig() {
   };
 
   global.config = config;
-  console.log('>> CONFIG OK');
+  console.log('>> CONFIG -> OK');
 }

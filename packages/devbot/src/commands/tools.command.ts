@@ -1,7 +1,6 @@
-import { BotResponse } from '@edixon/concord/src';
 import { colorsList } from '../enumerations';
 
-export const help = (content: TContent, response: BotResponse) => {
+export const help = ({ content, response }: TCommand): void => {
   response.embeded({
     header: 'HELP',
     title: 'Lista de Comandos',

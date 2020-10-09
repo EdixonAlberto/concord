@@ -1,49 +1,61 @@
 import { Client, Message } from 'discord.js';
-import BotResponse from './BotResponse';
-import MessageProcessor from './MessageProcessor';
-// import * as Command from '../commands';
-import { commandsList } from '@ENUM';
+import { BotResponse } from './BotResponse';
+import { MessageProcessor } from './MessageProcessor';
+import * as commandsDefault from './commandsDefault';
+import { TOptions, TContent } from '@types';
 
-export class Bot {
-  private static client: Client;
-  private static options: TOptions;
+class Bot {
+  readonly options: TOptions;
+  private client: Client;
 
-  // TODO: agregar mas opciones de config para el bot
   constructor(_options: TOptions) {
-    Bot.options = _options;
-    Bot.client = new Client();
+    this.options = _options;
+    this.client = new Client();
     this.event();
   }
 
   public async start(): Promise<void> {
     try {
-      await Bot.client.login(Bot.options.token);
+      await this.client.login(this.options.token);
     } catch (error) {
       console.log('>> BOT -> ', error.message);
     }
   }
 
   private event(): void {
-    Bot.client.on('ready', () => console.log('>> BOT -> OK'));
-    Bot.client.on('message', (message: Message) => {
+    this.client.on('ready', () => console.log('>> BOT -> OK'));
+
+    this.client.on('message', (message: Message) => {
       const { content } = new MessageProcessor(message);
       const response: BotResponse = new BotResponse(message);
-      // this.commands(content, response);
+
+      this.commands(content, response);
     });
   }
 
   // TODO:
-  // private commands(content: TContent, response: BotResponse): void {
-  //   if (content.prefix === Bot.options.prefix) {
-  //     if (config.modeDebug) console.log('>> CONTENT -> ' + JSON.stringify(content));
+  public commands(content: TContent, response: BotResponse): void {
+    if (content.prefix === this.options.prefix) {
+      console.log('>> CONTENT -> ' + JSON.stringify(content));
 
-  //     // Verify commnad in commnads list
-  //     if (commandsList[content.command]) {
-  //       Command[content.command](content, response); // Execute command dynamically
-  //     } else {
-  //       response.general('Comando Incorrecto ❌');
-  //       console.log('>> COMMAND -> Incorrect');
-  //     }
-  //   }
-  // }
+      // create pack commands
+      const commandsPack = {
+        ...commandsDefault,
+        ...this.options.commands
+      };
+
+      // Estudiar la verificaion de comandos despues
+      // Verify commnad in commnads list
+      // if (commandsList[content.command])
+
+      try {
+        commandsPack[content.command]({ content, response }); // Execute command dynamically
+      } catch (error) {
+        response.general('Comando Incorrecto ❌');
+        console.error('>> COMMAND -> Incorrect');
+      }
+    }
+  }
 }
+
+export { Bot };

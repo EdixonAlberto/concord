@@ -1,5 +1,6 @@
 import { Message } from 'discord.js';
 import { commandsList } from '@ENUM';
+import { TContent } from '@types';
 
 class MessageProcessor {
   private _content: TContent = {
@@ -32,4 +33,4 @@ class MessageProcessor {
   }
 }
 
-export default MessageProcessor;
+export { MessageProcessor };
