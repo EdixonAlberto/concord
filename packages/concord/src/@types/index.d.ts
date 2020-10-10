@@ -13,7 +13,7 @@ export type TContent = {
 
 export type TCommand = {
   content: TContent;
-  response: import('./BotResponse').BotResponse;
+  response: import('BotResponse').BotResponse;
 };
 
 export type TEmbed = {

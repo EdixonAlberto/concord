@@ -52,7 +52,7 @@ class Bot {
         commandsPack[content.command]({ content, response }); // Execute command dynamically
       } catch (error) {
         response.general('Comando Incorrecto ❌');
-        console.error('>> COMMAND -> Incorrect');
+        console.error('>> COMMAND -> Incorrect', error.message);
       }
     }
   }
