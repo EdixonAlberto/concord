@@ -4,6 +4,8 @@ type TConfig = {
 
 type TCommand = import('@edixon/concord').TCommand;
 
+type TLang = 'js';
+
 /************************************ DECLARATIONS **************************************/
 
 declare namespace NodeJS {

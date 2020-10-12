@@ -13,6 +13,10 @@
     /* Module Resolution Options */
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "baseUrl": "src",
+    "paths": {
+      "@ENUM": ["enumerations.ts"]
+    },
 
     /* Advanced Options */
     "forceConsistentCasingInFileNames": true,
