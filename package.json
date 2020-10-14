@@ -7,7 +7,7 @@
   "scripts": {
     "concord": "yarn workspace @edixon/concord",
     "devbot": "yarn workspace devbot",
-    "start": "yarn workspace devbot run start"
+    "start": "yarn workspace devbot dev"
   },
   "workspaces": [
     "packages/*"

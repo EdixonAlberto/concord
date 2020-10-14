@@ -1,14 +1,21 @@
 {
   "name": "devbot",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "build": "tsc --build",
-    "start": "nodemon -e ts -w ./src --exec \"yarn build && node dist/index.js\""
+    "dev": "nodemon -e ts -w ./src --exec \"yarn build && yarn start\"",
+    "alias-install": "link-module-alias",
+    "alias-clean": "link-module-alias clean || true",
+    "build": "tsc",
+    "start": "yarn alias-install && node dist"
+  },
+  "_moduleAliases": {
+    "~HELP": "dist/helpers"
   },
   "dependencies": {
     "@edixon/concord": "1.0.0",
+    "link-module-alias": "1.2.0",
     "scrape-it": "5.2.4"
   },
   "devDependencies": {

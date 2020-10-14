@@ -15,7 +15,7 @@
     "esModuleInterop": true,
     "baseUrl": "src",
     "paths": {
-      "@ENUM": ["enumerations.ts"]
+      "~HELP/*": ["helpers/*"]
     },
 
     /* Advanced Options */
