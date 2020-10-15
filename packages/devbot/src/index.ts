@@ -7,8 +7,9 @@ async function main() {
     await loadConfig();
 
     const bot = new Bot({
-      prefix: '>',
       token: global.config.discordToken,
+      prefix: '>',
+      color: '#566CB5',
       commands
     });
 

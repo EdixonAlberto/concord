@@ -1,6 +1,7 @@
 export type TOptions = {
-  prefix: string;
   token: string;
+  prefix: string;
+  color: string;
   commands: object;
 };
 

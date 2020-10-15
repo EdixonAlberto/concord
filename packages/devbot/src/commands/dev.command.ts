@@ -5,15 +5,15 @@ import { ScrapeMozilla } from '../modules/ScrapeMozilla';
 const HEADER: string = 'DEV';
 
 export const dev = async ({ content, response }: TCommand): Promise<void> => {
-  const [lang, method] = content.params;
-  let title: string = '';
-  let data: TDataDev;
-  console.log(data);
+  const [lang, method] = content.params as [TLang, string];
 
-  switch (lang as TLang) {
-    case 'js':
+  let title: string = '';
+  let data: TDataDev | undefined;
+
+  switch (langList[lang]) {
+    case langList.js:
       title = 'JavaScript';
-      data = await ScrapeMozilla.getMethod(method);
+      data = await ScrapeMozilla.definition(method);
       break;
 
     default:
@@ -40,15 +40,35 @@ export const dev = async ({ content, response }: TCommand): Promise<void> => {
           title: 'Ejemplo',
           content: Format.code('js', data.example),
           fieldType: 'row'
+        },
+        {
+          title: 'Fuente',
+          content: data.url,
+          fieldType: 'row'
         }
       ],
+      footer: '',
       color: colorsList.javascript
     });
   } else {
     response.embeded({
       header: HEADER,
       title: 'Error',
-      detail: `El metodo \`${method}()\` no existe`,
+      detail: [
+        {
+          title: `El metodo \`${method}()\` no existe`,
+          content: Format.code(
+            'md' as 'js',
+            `
+            Lista de markdouwn:
+            - 1
+            - 2
+            - 3
+          `
+          ),
+          fieldType: 'row'
+        }
+      ],
       color: colorsList.error
     });
   }

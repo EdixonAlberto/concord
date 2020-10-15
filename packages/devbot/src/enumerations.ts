@@ -4,6 +4,6 @@ export const enum colorsList {
   javascript = '#F7DF1E'
 }
 
-export const enum langList {
+export enum langList {
   js = 'JavaScript'
 }

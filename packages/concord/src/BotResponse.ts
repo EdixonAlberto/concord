@@ -1,12 +1,13 @@
 import { Message, MessageEmbed } from 'discord.js';
-import { colorsList } from '@ENUM';
 import { TEmbed, TField } from '@types';
 
 class BotResponse {
   private response: Message;
+  private defaultColor: string;
 
-  constructor(message: Message) {
+  constructor(message: Message, color: string) {
     this.response = message;
+    this.defaultColor = color;
   }
 
   public embeded({
@@ -14,7 +15,7 @@ class BotResponse {
     title,
     detail,
     footer = '',
-    color = colorsList.ok
+    color = this.defaultColor
   }: TEmbed): void {
     const embed = new MessageEmbed();
     embed.setAuthor(header).setTitle(title).setFooter(footer).setColor(color);

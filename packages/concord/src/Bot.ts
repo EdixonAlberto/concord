@@ -27,7 +27,7 @@ class Bot {
 
     this.client.on('message', (message: Message) => {
       const { content } = new MessageProcessor(message);
-      const response: BotResponse = new BotResponse(message);
+      const response: BotResponse = new BotResponse(message, this.options.color);
 
       this.commands(content, response);
     });

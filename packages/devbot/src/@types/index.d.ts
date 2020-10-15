@@ -9,8 +9,9 @@ type TLang = 'js';
 type TResponseMoz = {
   definition: {
     definition: string;
+    sintaxis?: string;
     example: string;
-    url: string;
+    exampleUrl: string;
   };
   example: {
     example: string;
@@ -21,12 +22,19 @@ type TResponseMoz = {
   };
 };
 
-type TDataDev =
-  | {
-      definition: string;
-      example: string;
-    }
-  | undefined;
+type TDataDev = {
+  definition: string;
+  sintaxis: string;
+  example: string;
+  url: string;
+};
+
+type TSearchResp = {
+  url: string;
+  sugestion: string;
+};
+
+type TDetail = import('@edixon/concord/src/@types').TEmbed['detail'];
 
 /************************************ DECLARATIONS **************************************/
 
