@@ -4,10 +4,10 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon -e ts -w ./src --exec \"yarn build && yarn start\"",
+    "dev": "yarn build && yarn start",
     "alias-install": "link-module-alias",
     "alias-clean": "link-module-alias clean || true",
-    "build": "tsc",
+    "build": "tsc --build",
     "start": "yarn alias-install && node dist"
   },
   "_moduleAliases": {

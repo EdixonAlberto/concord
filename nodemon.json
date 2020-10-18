@@ -1,0 +1,9 @@
+{
+  "watch": [
+    "packages/concord/src",
+    "packages/devbot/src"
+  ],
+  "ext": "ts",
+  "ignore": [],
+  "exec": "yarn workspace devbot dev"
+}

@@ -3,11 +3,15 @@
   "version": "1.0.0",
   "license": "MIT",
   "private": true,
-  "author": "Edixon Piña <edixonalbertto@gmail.com>",
+  "author": {
+    "name": "Edixon Piña",
+    "email": "edixonalbertto@gmail.com",
+    "url": "https://www.edixonalberto.com"
+  },
   "scripts": {
     "concord": "yarn workspace @edixon/concord",
     "devbot": "yarn workspace devbot",
-    "start": "yarn workspace devbot dev"
+    "start": "nodemon --config ./nodemon.json"
   },
   "workspaces": [
     "packages/*"
