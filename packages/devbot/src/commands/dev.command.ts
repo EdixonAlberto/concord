@@ -5,32 +5,51 @@ import { ScrapeMozilla } from '../modules/ScrapeMozilla';
 const HEADER: string = 'DEV';
 
 export const dev = async ({ content, response }: TCommand): Promise<void> => {
-  const [lang, method] = content.params as [TLang, string];
+  const params = content.params as Array<any>;
+  let lang: TLang | string = '',
+    type: string = '',
+    method: string = '';
+
+  if (params.length === 3) [lang, type, method] = params;
+  else if (params.length === 2) [lang, method] = params;
+  else {
+    response.embeded({
+      header: 'DEV',
+      title: 'Error',
+      body: 'Parametros no encontrados `[language, type, method]`',
+      color: colorsList.error
+    });
+    return;
+  }
 
   let title: string = '';
   let data: TDataDev | undefined;
 
-  switch (langList[lang]) {
+  switch (langList[lang as TLang]) {
     case langList.js:
       title = 'JavaScript';
-      data = await ScrapeMozilla.definition(method);
+      data = await ScrapeMozilla.definition(type, method);
       break;
 
     default:
       response.embeded({
-        header: HEADER,
+        header: 'DEV',
         title: 'Error',
-        detail: `\`${lang}\` no es un lenguaje valido`,
+        body: `\`${lang}\` no es un lenguaje valido`,
         color: colorsList.error
       });
-      break;
+      return;
+    // break;
   }
 
   if (data) {
     response.embeded({
-      header: HEADER,
-      title: `${title} \`${method}()\``,
-      detail: [
+      header: {
+        text: title,
+        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png'
+      },
+      title: `\`${method}()\``,
+      body: [
         {
           title: 'Definición',
           content: `${data.definition}`,
@@ -43,28 +62,28 @@ export const dev = async ({ content, response }: TCommand): Promise<void> => {
         },
         {
           title: 'Fuente',
-          content: data.url,
+          content: `[developer.mozilla.org](${data.url})`,
           fieldType: 'row'
         }
       ],
-      footer: '',
       color: colorsList.javascript
     });
-  } else {
+  } else if (lang) {
     response.embeded({
-      header: HEADER,
+      header: {
+        text: HEADER
+      },
       title: 'Error',
-      detail: [
+      body: [
         {
-          title: `El metodo \`${method}()\` no existe`,
+          title: `El método \`${method}()\` no existe`,
           content: Format.code(
             'md' as 'js',
-            `
-            Lista de markdouwn:
-            - 1
-            - 2
-            - 3
-          `
+            `Sugerencias:
+- 1
+- 2
+- 3
+`
           ),
           fieldType: 'row'
         }

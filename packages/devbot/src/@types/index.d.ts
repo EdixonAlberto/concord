@@ -34,8 +34,6 @@ type TSearchResp = {
   sugestion: string;
 };
 
-type TDetail = import('@edixon/concord/src/@types').TEmbed['detail'];
-
 /************************************ DECLARATIONS **************************************/
 
 declare namespace NodeJS {

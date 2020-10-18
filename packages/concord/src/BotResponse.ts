@@ -1,11 +1,11 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed, EmbedFieldData } from 'discord.js';
 import { TEmbed, TField } from '@types';
 
 class BotResponse {
   private response: Message;
   private defaultColor: string;
 
-  constructor(message: Message, color: string) {
+  constructor(message: Message, color: string = '') {
     this.response = message;
     this.defaultColor = color;
   }
@@ -13,16 +13,23 @@ class BotResponse {
   public embeded({
     header,
     title,
-    detail,
+    body,
     footer = '',
     color = this.defaultColor
   }: TEmbed): void {
     const embed = new MessageEmbed();
-    embed.setAuthor(header).setTitle(title).setFooter(footer).setColor(color);
 
-    if (typeof detail === 'string') embed.setDescription(detail);
+    embed.setTitle(title).setColor(color);
+
+    if (typeof header === 'string') embed.setAuthor(header);
+    else embed.setAuthor(header?.text, header?.img, header?.url);
+
+    if (typeof footer === 'string') embed.setFooter(footer);
+    else embed.setFooter(footer?.text, footer?.img);
+
+    if (typeof body === 'string') embed.setDescription(body);
     else {
-      const table = detail.map((field: TField) => ({
+      const table: EmbedFieldData[] = body.map((field: TField) => ({
         name: field.title,
         value: field.content,
         inline: field.fieldType === 'column'

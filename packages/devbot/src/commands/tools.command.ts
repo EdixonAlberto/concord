@@ -1,10 +1,8 @@
-import { colorsList } from '../enumerations';
-
-export const help = ({ content, response }: TCommand): void => {
+export const help = ({ response }: TCommand): void => {
   response.embeded({
     header: 'HELP',
     title: 'Lista de Comandos',
-    detail: [
+    body: [
       {
         title: '`>help`',
         content: 'Muestra la lista de comandos disponibles',
@@ -15,7 +13,6 @@ export const help = ({ content, response }: TCommand): void => {
         content: 'Muestra la definición de una palabra sobre programación',
         fieldType: 'row'
       }
-    ],
-    color: colorsList.ok
+    ]
   });
 };

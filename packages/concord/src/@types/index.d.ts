@@ -1,7 +1,7 @@
 export type TOptions = {
   token: string;
   prefix: string;
-  color: string;
+  color?: string;
   commands: object;
 };
 
@@ -18,10 +18,21 @@ export type TCommand = {
 };
 
 export type TEmbed = {
-  header: string;
+  header:
+    | string
+    | {
+        text?: string;
+        img?: string;
+        url?: string;
+      };
   title: string;
-  detail: string | TTable;
-  footer?: string;
+  body: string | TTable;
+  footer?:
+    | string
+    | {
+        text?: string;
+        img?: string;
+      };
   color?: string;
 };
 
