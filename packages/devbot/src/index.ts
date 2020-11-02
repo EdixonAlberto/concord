@@ -20,3 +20,9 @@ async function main() {
 }
 
 main();
+
+// TODO: crear test para probar modulo
+// import { ScrapeMozilla } from './modules/ScrapeMozilla';
+// (async () => {
+//   await ScrapeMozilla.definition(undefined, 'slice');
+// })();

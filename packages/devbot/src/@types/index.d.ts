@@ -7,31 +7,20 @@ type TCommand = import('@edixon/concord').TCommand;
 type TLang = 'js';
 
 type TResponseMoz = {
-  definition: {
-    definition: string;
-    sintaxis?: string;
-    example: string;
-    exampleUrl: string;
-  };
-  example: {
-    example: string;
-  };
-  search: {
-    title: string;
-    url: string;
-  };
+  data?: TScrape;
+  searchList?: TSearch[];
 };
 
-type TDataDev = {
+type TScrape = {
   definition: string;
-  sintaxis: string;
+  syntax: string;
   example: string;
   url: string;
 };
 
-type TSearchResp = {
-  url: string;
-  sugestion: string;
+type TSearch = {
+  title: string;
+  path: string;
 };
 
 /************************************ DECLARATIONS **************************************/

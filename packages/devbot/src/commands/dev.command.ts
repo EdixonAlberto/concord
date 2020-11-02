@@ -6,7 +6,7 @@ const HEADER: string = 'DEV';
 
 export const dev = async ({ content, response }: TCommand): Promise<void> => {
   const params = content.params as Array<any>;
-  let lang: TLang | string = '',
+  let lang: TLang,
     type: string = '',
     method: string = '';
 
@@ -23,12 +23,15 @@ export const dev = async ({ content, response }: TCommand): Promise<void> => {
   }
 
   let title: string = '';
-  let data: TDataDev | undefined;
+  let scrape: TScrape | undefined;
+  let searchs: TSearch[] | undefined;
 
-  switch (langList[lang as TLang]) {
+  switch (langList[lang]) {
     case langList.js:
       title = 'JavaScript';
-      data = await ScrapeMozilla.definition(type, method);
+      const { data, searchList } = await ScrapeMozilla.definition(type, method);
+      scrape = data;
+      searchs = searchList;
       break;
 
     default:
@@ -39,10 +42,9 @@ export const dev = async ({ content, response }: TCommand): Promise<void> => {
         color: colorsList.error
       });
       return;
-    // break;
   }
 
-  if (data) {
+  if (scrape) {
     response.embeded({
       header: {
         text: title,
@@ -52,43 +54,42 @@ export const dev = async ({ content, response }: TCommand): Promise<void> => {
       body: [
         {
           title: 'Definición',
-          content: `${data.definition}`,
+          content: scrape.definition,
+          fieldType: 'row'
+        },
+        {
+          title: 'Sintaxis',
+          content: Format.code(scrape.syntax, 'js'),
           fieldType: 'row'
         },
         {
           title: 'Ejemplo',
-          content: Format.code('js', data.example),
+          content: Format.code(scrape.example, 'js'),
           fieldType: 'row'
         },
         {
           title: 'Fuente',
-          content: `[developer.mozilla.org](${data.url})`,
+          content: `[developer.mozilla.org](${scrape.url})`,
           fieldType: 'row'
         }
       ],
       color: colorsList.javascript
     });
-  } else if (lang) {
-    response.embeded({
-      header: {
-        text: HEADER
-      },
-      title: 'Error',
-      body: [
-        {
-          title: `El método \`${method}()\` no existe`,
-          content: Format.code(
-            'md' as 'js',
-            `Sugerencias:
-- 1
-- 2
-- 3
-`
-          ),
-          fieldType: 'row'
-        }
-      ],
-      color: colorsList.error
-    });
   }
+  // } else if (lang && searchs) {
+  //   response.embeded({
+  //     header: {
+  //       text: HEADER
+  //     },
+  //     title: 'Error',
+  //     body: [
+  //       {
+  //         title: `El método \`${method}()\` no existe`,
+  //         content: searchs,
+  //         fieldType: 'row'
+  //       }
+  //     ],
+  //     color: colorsList.error
+  //   });
+  // }
 };

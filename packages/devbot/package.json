@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "yarn build && yarn start",
+    "dev": "clear && yarn build && node dist",
     "alias-install": "link-module-alias",
     "alias-clean": "link-module-alias clean || true",
     "build": "tsc --build",
@@ -15,10 +15,12 @@
   },
   "dependencies": {
     "@edixon/concord": "1.0.0",
-    "link-module-alias": "1.2.0",
-    "scrape-it": "5.2.4"
+    "axios": "0.21.0",
+    "cheerio": "1.0.0-rc.3",
+    "link-module-alias": "1.2.0"
   },
   "devDependencies": {
+    "@types/cheerio": "^0.22.22",
     "dotenv": "8.2.0",
     "nodemon": "2.0.4",
     "typescript": "4.0.3"

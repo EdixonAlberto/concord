@@ -1,8 +1,9 @@
-import scrapeIt from 'scrape-it';
-import cheerio from 'cheerio';
+import { CheerioWrapper } from '../libs/CheerioWrapper';
 
 const MOZILLA_URL: string = 'https://developer.mozilla.org';
 const PROTOTYPE_LIST: string = 'Array|String|Object';
+
+const cheerio = new CheerioWrapper(MOZILLA_URL);
 
 class ScrapeMozilla {
   constructor() {}
@@ -17,24 +18,22 @@ class ScrapeMozilla {
     const regex = new RegExp(
       `^(${type || PROTOTYPE_LIST})\\.prototype\\.${method}\\(\\)$`
     );
-    let url: string = '';
+    let path: string = '';
 
     // the search is carried out
     searchList.forEach((search: TSearch) => {
-      if (search.title.search(regex) > -1) url = search.url;
+      if (search.title.search(regex) > -1) path = search.path;
     });
 
     // the definition data is returned, otherwise the search list
-    if (url) {
-      const data = await ScrapeMozilla.getDefinition(url);
+    if (path) {
+      const data = await ScrapeMozilla.getDefinition(path);
       return { data };
-    } else return { searchList: '' };
+    } else return { searchList };
   }
 
   private static async searchMethod(type: string, method: string): Promise<TSearch[]> {
-    const { $ } = <{ $: cheerio.Selector }>(
-      await scrapeIt(`${MOZILLA_URL}/es/search?q=prototype.${method}`, {})
-    );
+    const $ = await cheerio.load(`/es/search?q=prototype.${method}`);
 
     const searchList = $('a.result-title')
       .map((i: number, _el: cheerio.Element) => {
@@ -42,7 +41,7 @@ class ScrapeMozilla {
 
         return {
           title: el.text(),
-          url: MOZILLA_URL + el.attr('href')
+          path: el.attr('href')
         };
       })
       .get();
@@ -50,54 +49,28 @@ class ScrapeMozilla {
     return searchList;
   }
 
-  private static async getDefinition(url: string): Promise<TDefinition> {
-    const { data, $ } = <{ data: any; $: cheerio.Selector }>await scrapeIt(url, {
-      example: {
-        selector: 'pre.js code',
-        texteq: 0
-      },
-      exampleUrl: {
-        selector: 'iframe.interactive.interactive-js',
-        attr: 'src'
-      }
-    });
+  private static async getDefinition(path: string): Promise<TScrape> {
+    const $ = await cheerio.load(path);
 
-    console.log(data);
+    const definition = $('p')
+      .map((i: number, _el: cheerio.Element) => {
+        const el = $(_el);
 
-    // const definition = $('p')
-    //   .map((i: number, _el: cheerio.Element) => {
-    //     const el = $(_el);
+        const paragraph = el.text();
+        if (paragraph !== '') return paragraph;
+      })
+      .get()[0];
 
-    //     const paragraph = el.text();
-    //     if (paragraph !== '') return paragraph;
-    //   })
-    //   .get()[0];
+    const el = $('h2#Syntax').text() ? $('h2#Syntax').next() : $('h2#Sintaxis').next();
+    const syntax = $(el).text();
 
-    // let syntax: string = '';
-
-    // syntax = $('pre.syntaxbox').text();
-    // console.log('SYNTAX:', syntax);
-
-    // const exampleList = $('pre')
-    //   .map((i: number, _el: cheerio.Element) => {
-    //     const el = $(_el);
-
-    //     if (syntax && i === 1) return el.text();
-    //     else {
-    //       if (i === 0) syntax = el.text();
-    //       // else if (i === 3) return el.text();
-    //     }
-    //   })
-    //   .get();
-
-    // const pre = $('pre.brush:', '#wikiArticle').text();
-    // const example = exampleList.join('');
+    const example = $('pre.js').eq(0).text();
 
     return {
-      definition: '',
-      syntax: '',
-      example: '',
-      url
+      definition,
+      syntax,
+      example,
+      url: MOZILLA_URL + path
     };
   }
 }
