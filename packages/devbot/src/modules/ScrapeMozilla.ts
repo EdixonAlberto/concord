@@ -8,17 +8,18 @@ const cheerio = new CheerioWrapper(MOZILLA_URL);
 class ScrapeMozilla {
   constructor() {}
 
-  public static async definition(
+  public static async searchDefinition(
     type: string = '',
     method: string
   ): Promise<TResponseMoz> {
+    let path: string = '';
+
     const searchList = await ScrapeMozilla.searchMethod(type, method);
 
     // creating regex to search
     const regex = new RegExp(
       `^(${type || PROTOTYPE_LIST})\\.prototype\\.${method}\\(\\)$`
     );
-    let path: string = '';
 
     // the search is carried out
     searchList.forEach((search: TSearch) => {
@@ -32,24 +33,7 @@ class ScrapeMozilla {
     } else return { searchList };
   }
 
-  private static async searchMethod(type: string, method: string): Promise<TSearch[]> {
-    const $ = await cheerio.load(`/es/search?q=prototype.${method}`);
-
-    const searchList = $('a.result-title')
-      .map((i: number, _el: cheerio.Element) => {
-        const el = $(_el);
-
-        return {
-          title: el.text(),
-          path: el.attr('href')
-        };
-      })
-      .get();
-
-    return searchList;
-  }
-
-  private static async getDefinition(path: string): Promise<TScrape> {
+  public static async getDefinition(path: string): Promise<TScrape> {
     const $ = await cheerio.load(path);
 
     const definition = $('p')
@@ -72,6 +56,25 @@ class ScrapeMozilla {
       example,
       url: MOZILLA_URL + path
     };
+  }
+
+  private static async searchMethod(type: string, method: string): Promise<TSearch[]> {
+    const $ = await cheerio.load(`/es/search?q=prototype.${method}`);
+
+    let searchList = $('a.result-title')
+      .map((i: number, _el: cheerio.Element) => {
+        const el = $(_el);
+        const title = el.text();
+        if (title.search(/\(\)/) > -1) {
+          return {
+            title,
+            path: el.attr('href')
+          };
+        }
+      })
+      .get();
+
+    return searchList;
   }
 }
 

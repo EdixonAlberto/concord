@@ -10,6 +10,10 @@ export type TContent = {
   command: import('@ENUM').commandsList & string;
   params: Array<string>;
   message: () => import('discord.js').Message;
+  await: (
+    filter: import('discord.js').CollectorFilter,
+    options?: import('discord.js').AwaitMessagesOptions
+  ) => Promise<import('discord.js').Collection<string, import('discord.js').Message>>;
 };
 
 export type TCommand = {

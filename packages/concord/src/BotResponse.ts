@@ -10,13 +10,13 @@ class BotResponse {
     this.defaultColor = color;
   }
 
-  public embeded({
+  public async embeded({
     header,
     title,
     body,
     footer = '',
     color = this.defaultColor
-  }: TEmbed): void {
+  }: TEmbed): Promise<void> {
     const embed = new MessageEmbed();
 
     embed.setTitle(title).setColor(color);
@@ -37,17 +37,18 @@ class BotResponse {
 
       embed.addFields(table);
     }
-    this.response.channel.send(embed);
+
+    await this.response.channel.send(embed);
   }
 
-  public general(response: string): void {
-    this.response.channel.send(response, {
+  public async general(response: string): Promise<void> {
+    await this.response.channel.send(response, {
       code: false
     });
   }
 
-  public direct(response: string): void {
-    this.response.reply(response, {
+  public async direct(response: string): Promise<void> {
+    await this.response.reply(response, {
       code: false
     });
   }
