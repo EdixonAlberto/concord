@@ -17,9 +17,7 @@ class ScrapeMozilla {
     const searchList = await ScrapeMozilla.searchMethod(type, method);
 
     // creating regex to search
-    const regex = new RegExp(
-      `^(${type || PROTOTYPE_LIST})\\.prototype\\.${method}\\(\\)$`
-    );
+    const regex = new RegExp(`^(${type || PROTOTYPE_LIST})\\.${method}\\(\\)$`);
 
     // the search is carried out
     searchList.forEach((search: TSearch) => {
@@ -39,12 +37,18 @@ class ScrapeMozilla {
     const paths: string[] = path.split('/');
     const method: string = paths[paths.length - 1];
 
-    const definition = $('p')
+    const definition: string = $('p')
       .map((i: number, _el: cheerio.Element) => {
         const el = $(_el);
-
         const paragraph = el.text();
-        if (paragraph !== '') return paragraph;
+
+        if (
+          paragraph !== '' &&
+          paragraph.length > 1 &&
+          !el.hasClass('translationInProgress')
+        ) {
+          return paragraph;
+        }
       })
       .get()[0];
 

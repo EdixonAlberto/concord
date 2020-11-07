@@ -76,8 +76,9 @@ export const dev = async ({ content, response }: TCommand): Promise<void> => {
     const text = input?.content;
 
     if (text) {
-      if (text === 'cancel') return;
-      else {
+      console.log('>> INPUT ->', text);
+
+      if (text !== 'cancel') {
         const nro: number = Number(text) - 1;
         const path: string = searchs[nro].path;
 
