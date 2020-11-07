@@ -16,7 +16,7 @@ export const dev = async ({ content, response }: TCommand): Promise<void> => {
     response.embeded({
       header,
       title: 'Error',
-      body: 'Parametros no encontrados `[language, type, method]`',
+      body: 'Parametros no encontrados `[extent] [type] [method]`',
       color: colorsList.error
     });
     return;
@@ -35,12 +35,16 @@ export const dev = async ({ content, response }: TCommand): Promise<void> => {
       break;
 
     default:
-      response.embeded({
-        header,
-        title: 'Error',
-        body: `\`${lang}\` no es un lenguaje valido`,
-        color: colorsList.error
-      });
+      if (['css', 'php'].includes(lang)) {
+        response.general(`El lenguaje \`${lang}\` esta en desarrollo 🛠️`);
+      } else {
+        response.embeded({
+          header,
+          title: 'Error',
+          body: `\`${lang}\` no es un lenguaje valido`,
+          color: colorsList.error
+        });
+      }
       return;
   }
 
