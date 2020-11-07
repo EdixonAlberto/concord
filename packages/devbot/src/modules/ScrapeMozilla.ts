@@ -36,6 +36,9 @@ class ScrapeMozilla {
   public static async getDefinition(path: string): Promise<TScrape> {
     const $ = await cheerio.load(path);
 
+    const paths: string[] = path.split('/');
+    const method: string = paths[paths.length - 1];
+
     const definition = $('p')
       .map((i: number, _el: cheerio.Element) => {
         const el = $(_el);
@@ -51,6 +54,7 @@ class ScrapeMozilla {
     const example = $('pre.js').eq(0).text();
 
     return {
+      method,
       definition,
       syntax,
       example,
@@ -64,7 +68,12 @@ class ScrapeMozilla {
     let searchList = $('a.result-title')
       .map((i: number, _el: cheerio.Element) => {
         const el = $(_el);
-        const title = el.text();
+
+        let title = el.text();
+        title = title
+          .split('.')
+          .filter((t: string) => t !== 'prototype')
+          .join('.');
         if (title.search(/\(\)/) > -1) {
           return {
             title,

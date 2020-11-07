@@ -28,7 +28,7 @@ class MessageProcessor {
       params: words,
       message: () => message,
       await: (filter: CollectorFilter, option?: AwaitMessagesOptions) =>
-        message.channel.awaitMessages(filter, { ...option, time: 10000 })
+        message.channel.awaitMessages(filter, { max: 1, time: 15000, ...option })
     };
   }
 

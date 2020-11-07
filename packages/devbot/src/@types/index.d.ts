@@ -12,6 +12,7 @@ type TResponseMoz = {
 };
 
 type TScrape = {
+  method: string;
   definition: string;
   syntax: string;
   example: string;

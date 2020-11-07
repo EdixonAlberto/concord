@@ -16,7 +16,7 @@ class BotResponse {
     body,
     footer = '',
     color = this.defaultColor
-  }: TEmbed): Promise<void> {
+  }: TEmbed): Promise<Message | undefined> {
     const embed = new MessageEmbed();
 
     embed.setTitle(title).setColor(color);
@@ -38,17 +38,17 @@ class BotResponse {
       embed.addFields(table);
     }
 
-    await this.response.channel.send(embed);
+    return await this.response.channel.send(embed);
   }
 
-  public async general(response: string): Promise<void> {
-    await this.response.channel.send(response, {
+  public async general(response: string): Promise<Message> {
+    return await this.response.channel.send(response, {
       code: false
     });
   }
 
-  public async direct(response: string): Promise<void> {
-    await this.response.reply(response, {
+  public async direct(response: string): Promise<Message> {
+    return await this.response.reply(response, {
       code: false
     });
   }
