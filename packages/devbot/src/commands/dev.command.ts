@@ -2,7 +2,7 @@ import { langList, colorsList } from '../enumerations';
 import { Format } from '~HELP/Format';
 import { ScrapeMozilla } from '../modules/ScrapeMozilla';
 
-const header: string = '>DEV';
+const header: string = 'DEV';
 
 export const dev = async ({ content, response }: TCommand): Promise<void> => {
   const params = content.params as Array<TLang & string>;
@@ -15,8 +15,22 @@ export const dev = async ({ content, response }: TCommand): Promise<void> => {
   else {
     response.embeded({
       header,
-      title: 'Error',
-      body: 'Parametros no encontrados `[extent] [type] [method]`',
+      title: '❌ Error: `parámetros faltantes`',
+      body: [
+        {
+          title: 'Comando',
+          content: ` \`>dev [extent] [type?] [method]\`
+- **extent:** Extensión del lenguaje de programación (js, php, py, ...).
+- **type:** (OPCIONAL) Tipo de método (array, string, object).
+- **method:** Nombre del método.`,
+          fieldType: 'row'
+        },
+        {
+          title: 'Ejemplos',
+          content: Format.code('>dev js array map\n>dev js map'),
+          fieldType: 'row'
+        }
+      ],
       color: colorsList.error
     });
     return;
@@ -35,13 +49,14 @@ export const dev = async ({ content, response }: TCommand): Promise<void> => {
       break;
 
     default:
-      if (['css', 'php'].includes(lang)) {
-        response.general(`El lenguaje \`${lang}\` esta en desarrollo 🛠️`);
+      if (['css', 'php', 'py'].includes(lang)) {
+        response.general(`🛠️ El lenguaje \`${lang}\` esta en desarrollo`);
       } else {
         response.embeded({
           header,
-          title: 'Error',
-          body: `\`${lang}\` no es un lenguaje valido`,
+          title: '❌ Error: `lenguaje invalido`',
+          body:
+            `\`${lang}\` no es un lenguaje valido, ` + 'intente con `css, js, php, py`',
           color: colorsList.error
         });
       }
