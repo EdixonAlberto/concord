@@ -11,9 +11,13 @@
   "scripts": {
     "concord": "yarn workspace @edixon/concord",
     "devbot": "yarn workspace devbot",
-    "start": "nodemon --config ./nodemon.json"
+    "build": "node ./build"
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "engines": {
+    "node": "^12.18.0",
+    "yarn": "^1.22.0"
+  }
 }

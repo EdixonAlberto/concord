@@ -18,7 +18,7 @@ class Bot {
     try {
       await this.client.login(this.options.token);
     } catch (error) {
-      console.log('>> BOT -> ', error.message);
+      console.log('!! ERROR-BOT ->', error.message);
     }
   }
 
@@ -51,7 +51,7 @@ class Bot {
       try {
         commandsPack[content.command]({ content, response }); // Execute command dynamically
       } catch (error) {
-        response.general('Comando Incorrecto ❌');
+        response.general('❌ Comando Incorrecto');
         console.error('>> COMMAND -> Incorrect', error.message);
       }
     }

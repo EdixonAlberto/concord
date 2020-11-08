@@ -1,0 +1,9 @@
+{
+  "watch": [
+    "../concord/src",
+    "./src"
+  ],
+  "ext": "ts",
+  "ignore": [],
+  "exec": "clear && yarn build && node dist"
+}

@@ -4,9 +4,9 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "clear && yarn build && node dist",
     "alias-install": "link-module-alias",
     "alias-clean": "link-module-alias clean || true",
+    "dev": "nodemon --config ./nodemon.json",
     "build": "tsc --build",
     "start": "yarn alias-install && node dist"
   },

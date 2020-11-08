@@ -4,6 +4,7 @@
     "target": "es5",
     "module": "commonjs",
     "lib": ["ESNext"],
+    "removeComments": true,
     "outDir": "dist",
     "rootDir": "src",
 
