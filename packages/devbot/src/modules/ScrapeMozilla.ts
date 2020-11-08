@@ -17,7 +17,7 @@ class ScrapeMozilla {
     const searchList = await ScrapeMozilla.searchMethod(type, method);
 
     // creating regex to search
-    const regex = new RegExp(`^(${type || PROTOTYPE_LIST})\\.${method}\\(\\)$`);
+    const regex = new RegExp(`^((${type || PROTOTYPE_LIST})\\.)?${method}\\(\\)`, 'i');
 
     // the search is carried out
     searchList.forEach((search: TSearch) => {
@@ -53,7 +53,7 @@ class ScrapeMozilla {
       .get()[0];
 
     const el = $('h2#Syntax').text() ? $('h2#Syntax').next() : $('h2#Sintaxis').next();
-    const syntax = $(el).text();
+    const syntax = el.hasClass('syntaxbox') ? el.text() : el.next().text();
 
     const example = $('pre.js').eq(0).text();
 

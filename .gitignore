@@ -1,7 +1,7 @@
 # FOLDERS
-.vscode
-node_modules
-dist
+.vscode/
+node_modules/
+dist/
 
 # FILES
 *.log
