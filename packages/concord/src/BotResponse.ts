@@ -12,6 +12,7 @@ class BotResponse {
 
   public async embeded({
     header,
+    imageHeader,
     title,
     body,
     footer = '',
@@ -19,13 +20,12 @@ class BotResponse {
   }: TEmbed): Promise<Message | undefined> {
     const embed = new MessageEmbed();
 
-    embed.setTitle(title).setColor(color);
-
     if (typeof header === 'string') embed.setAuthor(header);
     else embed.setAuthor(header?.text, header?.img, header?.url);
 
-    if (typeof footer === 'string') embed.setFooter(footer);
-    else embed.setFooter(footer?.text, footer?.img);
+    if (imageHeader) embed.setThumbnail(imageHeader);
+
+    if (title) embed.setTitle(title);
 
     if (typeof body === 'string') embed.setDescription(body);
     else {
@@ -37,6 +37,11 @@ class BotResponse {
 
       embed.addFields(table);
     }
+
+    if (typeof footer === 'string') embed.setFooter(footer);
+    else embed.setFooter(footer?.text, footer?.img);
+
+    embed.setColor(color);
 
     return await this.response.channel.send(embed);
   }

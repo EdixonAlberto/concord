@@ -29,7 +29,8 @@ export type TEmbed = {
         img?: string;
         url?: string;
       };
-  title: string;
+  imageHeader?: string;
+  title?: string;
   body: string | TTable;
   footer?:
     | string
