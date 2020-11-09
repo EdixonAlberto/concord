@@ -1,6 +1,7 @@
 import { langList, colorsList } from '../enumerations';
 import { Format } from '~HELP/Format';
 import { ScrapeMozilla } from '../modules/ScrapeMozilla';
+import { TTable } from '@edixon/concord';
 
 const header: string = 'DEV';
 
@@ -20,7 +21,7 @@ export const dev = async ({ content, response }: TCommand): Promise<void> => {
         {
           title: 'Comando',
           content: ` \`>dev [extent] [type?] [method]\`
-- **extent:** Extensión del lenguaje de programación (js, php, py, ...).
+- **extent:** Extensión del lenguaje de programación (js).
 - **type:** (OPCIONAL) Tipo de método (array, string, object).
 - **method:** Nombre del método.`,
           fieldType: 'row'
@@ -55,8 +56,7 @@ export const dev = async ({ content, response }: TCommand): Promise<void> => {
         response.embeded({
           header,
           title: '❌ Error: `lenguaje invalido`',
-          body:
-            `\`${lang}\` no es un lenguaje valido, ` + 'intente con `css, js, php, py`',
+          body: `\`${lang}\` no es un lenguaje valido, ` + 'intente con `js`',
           color: colorsList.error
         });
       }
@@ -70,10 +70,10 @@ export const dev = async ({ content, response }: TCommand): Promise<void> => {
         text: title,
         img: 'https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png'
       },
-      title: `El método \`${type ? type + '.' + method : method}()\` no existe`,
+      title: `El método \`${type ? type + '.' + method : method}\` no existe`,
       body: [
         {
-          title: 'Lista de posibles metodos',
+          title: 'Lista de posibles métodos',
           content: Format.search(searchs),
           fieldType: 'row'
         }
@@ -112,34 +112,39 @@ async function sendResponse(
   title: string,
   scrape: TScrape
 ): Promise<void> {
+  let body: TTable = [
+    {
+      title: 'Definición',
+      content: scrape.definition,
+      fieldType: 'row'
+    },
+    {
+      title: 'Ejemplo',
+      content: Format.code(scrape.example, 'js'),
+      fieldType: 'row'
+    },
+    {
+      title: 'Fuente',
+      content: `[developer.mozilla.org](${scrape.url})`,
+      fieldType: 'row'
+    }
+  ];
+
+  if (scrape.syntax) {
+    body.splice(1, 0, {
+      title: 'Sintaxis',
+      content: Format.code(scrape.syntax, 'js'),
+      fieldType: 'row'
+    });
+  }
+
   await response.embeded({
     header: {
       text: title,
       img: 'https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png'
     },
-    title: `\`${scrape.method}()\``,
-    body: [
-      {
-        title: 'Definición',
-        content: scrape.definition,
-        fieldType: 'row'
-      },
-      {
-        title: 'Sintaxis',
-        content: Format.code(scrape.syntax, 'js'),
-        fieldType: 'row'
-      },
-      {
-        title: 'Ejemplo',
-        content: Format.code(scrape.example, 'js'),
-        fieldType: 'row'
-      },
-      {
-        title: 'Fuente',
-        content: `[developer.mozilla.org](${scrape.url})`,
-        fieldType: 'row'
-      }
-    ],
+    title: `\`${scrape.method}\``,
+    body,
     color: colorsList.javascript
   });
 }
