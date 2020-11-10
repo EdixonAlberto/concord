@@ -1,20 +1,21 @@
-import { Client, Collection, Message } from 'discord.js';
+import { Client, Message } from 'discord.js';
+import { promises as fs } from 'fs';
+import { resolve } from 'path';
+
 import { BotResponse } from './BotResponse';
 import { MessageProcessor } from './MessageProcessor';
 import * as commandsDefault from './commandsDefault';
 import { TOptions, TContent } from '@types';
-import { promises as fs } from 'fs';
-import { resolve } from 'path';
 
 class Bot {
   readonly options: TOptions;
   private client: Client;
-  static commandsList: object = {};
+  static commands: object = {};
 
   constructor(_options: TOptions) {
     this.options = _options;
     this.client = new Client();
-    this.loadCommandFiles();
+    this.commandLoad(_options.commandsPath);
     this.event();
   }
 
@@ -33,42 +34,42 @@ class Bot {
       const { content } = new MessageProcessor(message);
       const response: BotResponse = new BotResponse(message, this.options.color);
 
-      this.commands(content, response);
+      this.commandRun(content, response);
     });
   }
 
   // TODO:
-  public commands(content: TContent, response: BotResponse): void {
+  public commandRun(content: TContent, response: BotResponse): void {
     if (content.prefix === this.options.prefix) {
-      console.log('>> CONTENT -> ' + JSON.stringify(content));
+      console.log('>> COMMAND-RUN -> ' + JSON.stringify(content));
 
       // create pack commands
       const commandsPack = {
         ...commandsDefault,
-        ...Bot.commandsList
+        ...Bot.commands
       };
 
-      // Estudiar la verificaion de comandos despues
-      // Verify commnad in commnads list
-      // if (commandsList[content.command])
-
       try {
-        commandsPack[content.command]({ content, response }); // Execute command dynamically
+        if (commandsPack[content.command]) {
+          // Execute command dynamically
+          commandsPack[content.command]({ content, response });
+        } else throw new Error(`Incorrect commnad: "${content.command}"`);
       } catch (error) {
         response.general('❌ Comando Incorrecto');
-        console.error('>> COMMAND -> Incorrect', error.message);
+        console.error('!! WARN-COMMAND-RUN ->', error.message);
       }
     }
   }
 
-  private async loadCommandFiles() {
-    const path = resolve('dist', 'commands');
+  private async commandLoad(commandsPath?: string): Promise<void> {
+    // load commands from files
+    const path = commandsPath || resolve('dist', 'commands');
     const commandFiles = await fs.readdir(path);
 
     for (const file of commandFiles) {
       const command = await import(resolve(path, file));
-
-      Bot.commandsList = { ...Bot.commandsList, ...command };
+      // create commands object
+      Bot.commands = { ...Bot.commands, ...command };
     }
   }
 }

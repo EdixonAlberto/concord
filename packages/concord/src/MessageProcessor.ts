@@ -1,21 +1,23 @@
-import { Message, CollectorFilter, AwaitMessagesOptions, Collection } from 'discord.js';
-import { commandsList } from '@ENUM';
-import { TContent } from '@types';
+import { Message, CollectorFilter, AwaitMessagesOptions } from 'discord.js';
+import { TCommandsList, TContent } from '@types';
 
 class MessageProcessor {
   private _content: TContent = {
     prefix: '',
-    command: '' as commandsList,
+    command: '' as TCommandsList,
     params: [],
     // The property "message" is used from a function
     // so that its data is not displayed in the log
     message: () => ({} as Message),
-    await: (filter: CollectorFilter, options?: AwaitMessagesOptions) =>
-      ({} as Promise<Collection<string, Message>>)
+    await: {} as TContent['await']
   };
 
   constructor(message: Message) {
     this.contentExtract(message);
+  }
+
+  public get content(): TContent {
+    return this._content;
   }
 
   private contentExtract(message: Message): void {
@@ -24,16 +26,12 @@ class MessageProcessor {
 
     this._content = {
       prefix: message.content.substr(0, 1),
-      command: prefixComand.substr(1) as commandsList,
+      command: prefixComand.substr(1) as TCommandsList,
       params: words,
       message: () => message,
       await: (filter: CollectorFilter, option?: AwaitMessagesOptions) =>
         message.channel.awaitMessages(filter, { max: 1, time: 15000, ...option })
     };
-  }
-
-  public get content(): TContent {
-    return this._content;
   }
 }
 

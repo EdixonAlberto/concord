@@ -1,19 +1,23 @@
+import { Message, CollectorFilter, AwaitMessagesOptions, Collection } from 'discord.js';
+
 export type TOptions = {
   token: string;
   prefix: string;
   color?: string;
-  commands?: object;
+  commandsPath?: string;
 };
+
+export type TCommandsList = import('@ENUM').commandsList & string;
 
 export type TContent = {
   prefix: string;
-  command: import('@ENUM').commandsList & string;
+  command: TCommandsList;
   params: Array<string>;
-  message: () => import('discord.js').Message;
+  message: () => Message;
   await: (
-    filter: import('discord.js').CollectorFilter,
-    options?: import('discord.js').AwaitMessagesOptions
-  ) => Promise<import('discord.js').Collection<string, import('discord.js').Message>>;
+    filter: CollectorFilter,
+    options?: AwaitMessagesOptions
+  ) => Promise<Collection<string, Message>>;
 };
 
 export type TCommand = {
