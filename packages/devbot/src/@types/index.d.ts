@@ -1,5 +1,6 @@
 type TConfig = {
   discordToken: string;
+  prefix: string;
 };
 
 type TCommand = import('@edixon/concord').TCommand;

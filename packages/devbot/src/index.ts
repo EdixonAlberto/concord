@@ -7,7 +7,7 @@ async function main() {
 
     const bot = new Bot({
       token: global.config.discordToken,
-      prefix: '>',
+      prefix: global.config.prefix,
       color: '#566CB5'
     });
 
