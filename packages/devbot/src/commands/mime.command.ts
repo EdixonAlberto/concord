@@ -4,6 +4,26 @@ import { Format } from '~HELP/Format';
 export const mime = async ({ content, response }: TCommand): Promise<void> => {
   const ext = content.params[0];
 
+  if (!ext) {
+    response.embeded({
+      header: 'MIME',
+      title: '❌ Error: `parámetros faltantes`',
+      body: [
+        {
+          title: 'Comando',
+          content: `\`>mime [extent]\`
+  Muestra una descripción del tipo de medio MIME introducido
+  - **extent:** Extensión del tipo de medio (pdf, word, js, json, etc)`
+        },
+        {
+          title: 'Ejemplo',
+          content: Format.code('>mime json')
+        }
+      ]
+    });
+    return;
+  }
+
   const data = await ScrapeMozilla.getMime(ext);
 
   if (data) {

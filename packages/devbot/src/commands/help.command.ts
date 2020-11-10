@@ -6,21 +6,26 @@ export const help = ({ response }: TCommand): void => {
       //       {
       //         title: '`>wiki [word]`',
       //         content: `Muestra la definición de una palabra sobre programación.
-      // - **word:** Palabra que se quiere definir`,
-      //         fieldType: 'row'
+      // - **word:** Palabra que se quiere definir`
       //       },
       {
-        title: '`>dev [extent] [type?] [method]`',
-        content: `Muestra (definición, sintaxis, ejemplo) sobre un método en el lenguaje de programación ingresado.
-- **extent:** Extensión del lenguaje de programación (js, php, py, ...).
+        title: 'DEV',
+        content: `\`>dev [extent] [type?] [method]\`
+Muestra (definición, sintaxis, ejemplo) sobre un método en el lenguaje de programación ingresado.
+- **extent:** Extensión del lenguaje de programación (js, php, py, etc).
 - **type:** (OPCIONAL) Tipo de método (array, string, object).
-- **method:** Nombre del método.`,
-        fieldType: 'row'
+- **method:** Nombre del método.`
       },
       {
-        title: '`>about`',
-        content: 'Muestra información del creador y una breve descripción del bot',
-        fieldType: 'row'
+        title: 'ABOUT',
+        content:
+          '`>about`\nMuestra información del creador y una breve descripción del bot'
+      },
+      {
+        title: 'MIME',
+        content: `\`>mime [extent]\`
+Muestra una descripción del tipo de medio MIME introducido
+- **extent:** Extensión del tipo de medio (pdf, word, js, json, etc)`
       }
     ]
   });
