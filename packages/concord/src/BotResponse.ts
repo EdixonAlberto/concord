@@ -32,7 +32,7 @@ class BotResponse {
       const table: EmbedFieldData[] = body.map((field: TField) => ({
         name: field.title,
         value: field.content,
-        inline: field.fieldType === 'column'
+        inline: (field.fieldType || 'row') === 'column'
       }));
 
       embed.addFields(table);

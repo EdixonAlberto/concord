@@ -8,8 +8,7 @@ export const about = async ({ content, response }: TCommand): Promise<void> => {
         title: 'Sobre mi',
         content: `Mi nombre es Edixon Piña, soy Ingeniero Electrónico en Computación y actualmente me dedico a tiempo completo como desarrollador de software.
 - **Sitio Web:** [www.edixonalberto.com](https://www.edixonalberto.com/)
-- **Github:** [EdixonAlberto](https://github.com/EdixonAlberto)`,
-        fieldType: 'row'
+- **Github:** [EdixonAlberto](https://github.com/EdixonAlberto)`
       },
       {
         title: 'Sobre DevBot',
@@ -17,8 +16,7 @@ export const about = async ({ content, response }: TCommand): Promise<void> => {
 
 El bot esta preparado para obtener **definiciones, sintaxis y ejemplos de código** en varios lenguajes de programación, obteniendo la información directamente de la documentación oficial de cada lenguaje.
 
-Pronto se irán incorporando **mas herramientas** que ayuden con el desarrollo de software.`,
-        fieldType: 'row'
+Pronto se irán incorporando **mas herramientas** que ayuden con el desarrollo de software.`
       }
     ]
   });

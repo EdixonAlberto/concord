@@ -23,13 +23,11 @@ export const dev = async ({ content, response }: TCommand): Promise<void> => {
           content: ` \`>dev [extent] [type?] [method]\`
 - **extent:** Extensión del lenguaje de programación (js).
 - **type:** (OPCIONAL) Tipo de método (array, string, object).
-- **method:** Nombre del método.`,
-          fieldType: 'row'
+- **method:** Nombre del método.`
         },
         {
           title: 'Ejemplos',
-          content: Format.code('>dev js array map\n>dev js map'),
-          fieldType: 'row'
+          content: Format.code('>dev js array map\n>dev js map')
         }
       ],
       color: colorsList.error
@@ -74,8 +72,7 @@ export const dev = async ({ content, response }: TCommand): Promise<void> => {
       body: [
         {
           title: 'Lista de posibles métodos',
-          content: Format.search(searchs),
-          fieldType: 'row'
+          content: Format.search(searchs)
         }
       ],
       footer: 'Escriba un número para hacer una elección. Escriba "cancel" para salir',
@@ -115,26 +112,22 @@ async function sendResponse(
   let body: TTable = [
     {
       title: 'Definición',
-      content: scrape.definition,
-      fieldType: 'row'
+      content: scrape.definition
     },
     {
       title: 'Ejemplo',
-      content: Format.code(scrape.example, 'js'),
-      fieldType: 'row'
+      content: Format.code(scrape.example, 'js')
     },
     {
       title: 'Fuente',
-      content: Format.link('developer.mozilla.org', scrape.url),
-      fieldType: 'row'
+      content: Format.link('developer.mozilla.org', scrape.url)
     }
   ];
 
   if (scrape.syntax) {
     body.splice(1, 0, {
       title: 'Sintaxis',
-      content: Format.code(scrape.syntax, 'js'),
-      fieldType: 'row'
+      content: Format.code(scrape.syntax, 'js')
     });
   }
 

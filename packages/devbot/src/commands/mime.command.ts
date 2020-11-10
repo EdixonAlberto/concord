@@ -15,23 +15,19 @@ export const mime = async ({ content, response }: TCommand): Promise<void> => {
       body: [
         {
           title: 'Extension',
-          content: mime.extension,
-          fieldType: 'row'
+          content: mime.extension
         },
         {
           title: 'Tipo de Documento',
-          content: mime.typeDoc,
-          fieldType: 'row'
+          content: mime.typeDoc
         },
         {
           title: 'Tipo de MIME',
-          content: mime.typeMime,
-          fieldType: 'row'
+          content: mime.typeMime
         },
         {
           title: 'Fuente',
-          content: Format.link('developer.mozilla.org', data.source),
-          fieldType: 'row'
+          content: Format.link('developer.mozilla.org', data.source)
         }
       ]
     });

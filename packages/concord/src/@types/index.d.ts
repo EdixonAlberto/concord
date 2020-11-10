@@ -50,7 +50,7 @@ export type TTable = Array<TField>;
 export type TField = {
   title: string;
   content: string;
-  fieldType: 'row' | 'column';
+  fieldType?: 'row' | 'column';
 };
 
 /************************************ DECLARATIONS **************************************/

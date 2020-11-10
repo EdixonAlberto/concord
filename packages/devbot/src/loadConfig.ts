@@ -7,7 +7,8 @@ export async function loadConfig() {
   const ENV: NodeJS.ProcessEnv = process.env;
 
   const config: TConfig = {
-    discordToken: ENV.DISCORD_TOKEN as string
+    discordToken: ENV.DISCORD_TOKEN as string,
+    prefix: ENV.PREFIX as string
   };
 
   global.config = config;
