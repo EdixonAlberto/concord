@@ -1,7 +1,7 @@
 import { langList, colorsList } from '../enumerations';
 import { Format } from '~HELP/Format';
 import { ScrapeMozilla } from '../modules/ScrapeMozilla';
-import { TTable } from '@edixon/concord';
+import { TField } from '@edixon/concord';
 
 const header: string = 'DEV';
 
@@ -109,7 +109,7 @@ async function sendResponse(
   title: string,
   scrape: TScrape
 ): Promise<void> {
-  let body: TTable = [
+  let body: TField[] = [
     {
       title: 'Definición',
       content: scrape.definition

@@ -1,4 +1,4 @@
 import { Bot } from './Bot';
-import { TCommand, TTable } from '@types';
+import { TCommand, TField } from '@types';
 
-export { Bot, TCommand, TTable };
+export { Bot, TCommand, TField };

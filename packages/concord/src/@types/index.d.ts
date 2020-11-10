@@ -35,7 +35,7 @@ export type TEmbed = {
       };
   imageHeader?: string;
   title?: string;
-  body: string | TTable;
+  body: string | TField[];
   footer?:
     | string
     | {
@@ -44,8 +44,6 @@ export type TEmbed = {
       };
   color?: string;
 };
-
-export type TTable = Array<TField>;
 
 export type TField = {
   title: string;
