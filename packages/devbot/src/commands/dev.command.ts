@@ -125,7 +125,7 @@ async function sendResponse(
     },
     {
       title: 'Fuente',
-      content: `[developer.mozilla.org](${scrape.url})`,
+      content: Format.link('developer.mozilla.org', scrape.url),
       fieldType: 'row'
     }
   ];

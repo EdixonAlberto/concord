@@ -1,4 +1,5 @@
 import { ScrapeMozilla } from '../modules/ScrapeMozilla';
+import { Format } from '~HELP/Format';
 
 export const mime = async ({ content, response }: TCommand): Promise<void> => {
   const ext = content.params[0];
@@ -29,7 +30,7 @@ export const mime = async ({ content, response }: TCommand): Promise<void> => {
         },
         {
           title: 'Fuente',
-          content: `[developer.mozilla.org](${data.source})`,
+          content: Format.link('developer.mozilla.org', data.source),
           fieldType: 'row'
         }
       ]

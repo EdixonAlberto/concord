@@ -12,6 +12,10 @@ class Format {
 
     return Format.code(itemList);
   }
+
+  public static link(title: string, url: string): string {
+    return `[${title}](${url})`;
+  }
 }
 
 export { Format };
