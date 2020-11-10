@@ -24,6 +24,17 @@ type TSearch = {
   path: string;
 };
 
+type TResponseMime = {
+  mime: TMime;
+  source: string;
+};
+
+type TMime = {
+  extension: string;
+  typeDoc: string;
+  typeMime: string;
+};
+
 /************************************ DECLARATIONS **************************************/
 
 declare namespace NodeJS {

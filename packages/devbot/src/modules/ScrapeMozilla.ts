@@ -89,6 +89,36 @@ class ScrapeMozilla {
 
     return searchList;
   }
+
+  public static async getMime(ext: string): Promise<TResponseMime | undefined> {
+    const path: string = '/es/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types';
+    const $ = await cheerio.load(path);
+
+    const tbody = $('.standard-table').children('tbody');
+
+    const mimeList = <TMime[]>tbody
+      .children()
+      .map((i: number, _el: cheerio.Element) => {
+        const el = $(_el);
+        const col = el.children();
+
+        return {
+          extension: $(col[0]).text(),
+          typeDoc: $(col[1]).text(),
+          typeMime: $(col[2]).text()
+        };
+      })
+      .get();
+
+    const mime = mimeList.find((mime: TMime) => mime.extension === `.${ext}`);
+
+    if (mime) {
+      return {
+        mime,
+        source: MOZILLA_URL + path
+      };
+    }
+  }
 }
 
 export { ScrapeMozilla };
