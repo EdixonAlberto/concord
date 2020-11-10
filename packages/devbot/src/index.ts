@@ -1,6 +1,5 @@
 import { loadConfig } from './loadConfig';
 import { Bot } from '@edixon/concord';
-import * as commands from './commands';
 
 async function main() {
   try {
@@ -8,9 +7,8 @@ async function main() {
 
     const bot = new Bot({
       token: global.config.discordToken,
-      prefix: '>',
-      color: '#566CB5',
-      commands
+      prefix: '<',
+      color: '#566CB5'
     });
 
     await bot.start();

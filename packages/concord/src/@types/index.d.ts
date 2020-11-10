@@ -2,7 +2,7 @@ export type TOptions = {
   token: string;
   prefix: string;
   color?: string;
-  commands: object;
+  commands?: object;
 };
 
 export type TContent = {

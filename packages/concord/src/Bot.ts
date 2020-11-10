@@ -1,16 +1,20 @@
-import { Client, Message } from 'discord.js';
+import { Client, Collection, Message } from 'discord.js';
 import { BotResponse } from './BotResponse';
 import { MessageProcessor } from './MessageProcessor';
 import * as commandsDefault from './commandsDefault';
 import { TOptions, TContent } from '@types';
+import { promises as fs } from 'fs';
+import { resolve } from 'path';
 
 class Bot {
   readonly options: TOptions;
   private client: Client;
+  static commandsList: object = {};
 
   constructor(_options: TOptions) {
     this.options = _options;
     this.client = new Client();
+    this.loadCommandFiles();
     this.event();
   }
 
@@ -41,7 +45,7 @@ class Bot {
       // create pack commands
       const commandsPack = {
         ...commandsDefault,
-        ...this.options.commands
+        ...Bot.commandsList
       };
 
       // Estudiar la verificaion de comandos despues
@@ -54,6 +58,17 @@ class Bot {
         response.general('❌ Comando Incorrecto');
         console.error('>> COMMAND -> Incorrect', error.message);
       }
+    }
+  }
+
+  private async loadCommandFiles() {
+    const path = resolve('dist', 'commands');
+    const commandFiles = await fs.readdir(path);
+
+    for (const file of commandFiles) {
+      const command = await import(resolve(path, file));
+
+      Bot.commandsList = { ...Bot.commandsList, ...command };
     }
   }
 }
