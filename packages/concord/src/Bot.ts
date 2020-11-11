@@ -8,7 +8,7 @@ import * as commandsDefault from './commandsDefault';
 import { TOptions, TContent } from '@types';
 
 class Bot {
-  readonly options: TOptions;
+  private readonly options: TOptions;
   private client: Client;
   static commands: object = {};
 
@@ -38,8 +38,7 @@ class Bot {
     });
   }
 
-  // TODO:
-  public commandRun(content: TContent, response: BotResponse): void {
+  private commandRun(content: TContent, response: BotResponse): void {
     if (content.prefix === this.options.prefix) {
       console.log('>> COMMAND-RUN -> ' + JSON.stringify(content));
 
@@ -63,13 +62,16 @@ class Bot {
 
   private async commandLoad(commandsPath?: string): Promise<void> {
     // load commands from files
-    const path = commandsPath || resolve('dist', 'commands');
+    const path = commandsPath || resolve('src', 'commands');
     const commandFiles = await fs.readdir(path);
 
     for (const file of commandFiles) {
-      const command = await import(resolve(path, file));
-      // create commands object
-      Bot.commands = { ...Bot.commands, ...command };
+      // Verify the name of the command files
+      if (file.search(/[a-z0-9]*\.command\.js/) > -1) {
+        const command = await import(resolve(path, file));
+        // create commands object
+        Bot.commands = { ...Bot.commands, ...command };
+      }
     }
   }
 }
