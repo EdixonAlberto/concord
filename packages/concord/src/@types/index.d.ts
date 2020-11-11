@@ -7,11 +7,11 @@ export type TOptions = {
   commandsPath?: string;
 };
 
-export type TCommandsList = import('@ENUM').commandsList & string;
+export type TCommandList = import('@ENUM').commandsList & string;
 
 export type TContent = {
   prefix: string;
-  command: TCommandsList;
+  command: TCommandList;
   params: Array<string>;
   message: () => Message;
   await: (

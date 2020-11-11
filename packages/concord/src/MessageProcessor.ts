@@ -1,10 +1,10 @@
 import { Message, CollectorFilter, AwaitMessagesOptions } from 'discord.js';
-import { TCommandsList, TContent } from '@types';
+import { TCommandList, TContent } from '@types';
 
 class MessageProcessor {
   private _content: TContent = {
     prefix: '',
-    command: '' as TCommandsList,
+    command: '' as TCommandList,
     params: [],
     // The property "message" is used from a function
     // so that its data is not displayed in the log
@@ -26,7 +26,7 @@ class MessageProcessor {
 
     this._content = {
       prefix: message.content.substr(0, 1),
-      command: prefixComand.substr(1) as TCommandsList,
+      command: prefixComand.substr(1) as TCommandList,
       params: words,
       message: () => message,
       await: (filter: CollectorFilter, option?: AwaitMessagesOptions) =>
