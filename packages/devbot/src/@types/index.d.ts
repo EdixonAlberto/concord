@@ -3,6 +3,11 @@ type TConfig = {
   prefix: string;
 };
 
+type TCommandData = {
+  name: string;
+  description: string;
+};
+
 type TCommand = import('@edixon/concord').TCommand;
 
 type TLang = 'js';

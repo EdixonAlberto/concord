@@ -11,7 +11,8 @@
     "start": "yarn alias-install && node dist"
   },
   "_moduleAliases": {
-    "~HELP": "dist/helpers"
+    "~HELP": "dist/helpers",
+    "~DATA": "dist/data"
   },
   "dependencies": {
     "@edixon/concord": "1.0.0",

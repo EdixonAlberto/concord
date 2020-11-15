@@ -1,9 +1,10 @@
-import { langList, colorsList } from '../enumerations';
-import { Format } from '~HELP/Format';
-import { ScrapeMozilla } from '../modules/ScrapeMozilla';
 import { TField } from '@edixon/concord';
+import { ScrapeMozilla } from '../modules/ScrapeMozilla';
+import { Format } from '~HELP/Format';
+import { getCommandData } from '~DATA/commandData';
+import { langList, colorsList } from '~DATA/enumerations';
 
-const header: string = 'DEV';
+const COMMAND = getCommandData('DEV');
 
 export const dev = async ({ content, response }: TCommand): Promise<void> => {
   const params = content.params as Array<TLang & string>;
@@ -15,22 +16,38 @@ export const dev = async ({ content, response }: TCommand): Promise<void> => {
   else if (params.length === 2) [lang, method] = params;
   else {
     response.embeded({
-      header,
-      title: '❌ Error: `parámetros faltantes`',
+      header: COMMAND.name,
+      title: '? HELP',
       body: [
         {
           title: 'Comando',
-          content: ` \`>dev [extent] [type?] [method]\`
-- **extent:** Extensión del lenguaje de programación (js).
-- **type:** (OPCIONAL) Tipo de método (array, string, object).
-- **method:** Nombre del método.`
+          content: COMMAND.description
         },
         {
-          title: 'Ejemplos',
-          content: Format.code('>dev js array map\n>dev js map')
+          title: 'Ejemplo',
+          content: Format.code('>dev js map')
         }
       ],
       color: colorsList.error
+    });
+
+    response.embeded({
+      header: {
+        text: '',
+        img: '',
+        url: ''
+      },
+      imageHeader: '',
+      title: '',
+      body: [
+        {
+          title: '',
+          content: '',
+          fieldType: 'column'
+        }
+      ],
+      color: '',
+      footer: ''
     });
     return;
   }
@@ -52,7 +69,7 @@ export const dev = async ({ content, response }: TCommand): Promise<void> => {
         response.general(`🛠️ El lenguaje \`${lang}\` esta en desarrollo`);
       } else {
         response.embeded({
-          header,
+          header: COMMAND.name,
           title: '❌ Error: `lenguaje invalido`',
           body: `\`${lang}\` no es un lenguaje valido, ` + 'intente con `js`',
           color: colorsList.error
@@ -97,7 +114,7 @@ export const dev = async ({ content, response }: TCommand): Promise<void> => {
         const scrape = await ScrapeMozilla.getDefinition(path);
         await sendResponse(response, title, scrape);
       }
-    } else response.general('❌ Tiempo de espera terminado');
+    } else response.general('! Tiempo de espera terminado');
 
     await resp?.delete();
     input?.delete();

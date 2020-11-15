@@ -1,19 +1,22 @@
 import { ScrapeMozilla } from '../modules/ScrapeMozilla';
 import { Format } from '~HELP/Format';
+import { getCommandData } from '~DATA/commandData';
+
+const COMMAND = getCommandData('MIME');
 
 export const mime = async ({ content, response }: TCommand): Promise<void> => {
   const ext = content.params[0];
 
+  content.message().channel.client.user?.username;
+
   if (!ext) {
     response.embeded({
-      header: 'MIME',
+      header: COMMAND.name,
       title: '❌ Error: `parámetros faltantes`',
       body: [
         {
           title: 'Comando',
-          content: `\`>mime [extent]\`
-  Muestra una descripción del tipo de medio MIME introducido
-  - **extent:** Extensión del tipo de medio (pdf, word, js, json, etc)`
+          content: COMMAND.description
         },
         {
           title: 'Ejemplo',
@@ -30,7 +33,7 @@ export const mime = async ({ content, response }: TCommand): Promise<void> => {
     const mime = data.mime;
 
     response.embeded({
-      header: 'MIME',
+      header: COMMAND.name,
       title: `Descripción del medio \`${ext}\``,
       body: [
         {
@@ -51,5 +54,5 @@ export const mime = async ({ content, response }: TCommand): Promise<void> => {
         }
       ]
     });
-  } else response.general('❌ medio no encontrado');
+  } else response.general('❌ tipo de medio invalido');
 };

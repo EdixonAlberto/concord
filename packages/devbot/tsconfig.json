@@ -16,7 +16,8 @@
     "esModuleInterop": true,
     "baseUrl": "src",
     "paths": {
-      "~HELP/*": ["helpers/*"]
+      "~HELP/*": ["helpers/*"],
+      "~DATA/*": ["data/*"]
     },
 
     /* Advanced Options */
