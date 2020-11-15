@@ -5,5 +5,5 @@
   ],
   "ext": "ts",
   "ignore": [],
-  "exec": "clear && yarn build && node dist"
+  "exec": "clear && yarn build && yarn start"
 }

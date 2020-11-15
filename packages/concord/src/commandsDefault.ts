@@ -4,8 +4,7 @@ export const ping = ({ content, response }: TCommand): void => {
   const dateMessage = content.message().createdTimestamp;
   const dateNow = Date.now();
 
-  const latency = dateNow - dateMessage;
-  const ping = (latency / 1000).toFixed(2);
+  const ping = dateNow - dateMessage;
 
   response.general(`🛰️ Pong - duración: **${ping} ms**`);
 };

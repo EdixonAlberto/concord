@@ -11,7 +11,7 @@
   "scripts": {
     "concord": "yarn workspace @edixon/concord",
     "devbot": "yarn workspace devbot",
-    "testbot": "yarn workspace testbot",
+    "testbot": "yarn concord build && yarn workspace testbot",
     "build": "node ./build"
   },
   "workspaces": [
