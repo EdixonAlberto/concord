@@ -1,10 +1,10 @@
 import { TField } from '@edixon/concord';
 import { ScrapeMozilla } from '../modules/ScrapeMozilla';
 import { Format } from '~HELP/Format';
-import { getCommandData } from '~DATA/commandData';
+import { getCommandData } from '~DATA/command.data';
 import { langList, colorsList } from '~DATA/enumerations';
 
-const COMMAND = getCommandData('DEV');
+const CMD = getCommandData('DEV');
 
 export const dev = async ({ content, response }: TCommand): Promise<void> => {
   const params = content.params as Array<TLang & string>;
@@ -16,38 +16,22 @@ export const dev = async ({ content, response }: TCommand): Promise<void> => {
   else if (params.length === 2) [lang, method] = params;
   else {
     response.embeded({
-      header: COMMAND.name,
-      title: '? HELP',
+      header: '❔ HELP',
+      title: CMD.name,
       body: [
         {
           title: 'Comando',
-          content: COMMAND.description
+          content: CMD.command
+        },
+        {
+          title: 'Descripción',
+          content: CMD.description
         },
         {
           title: 'Ejemplo',
           content: Format.code('>dev js map')
         }
-      ],
-      color: colorsList.error
-    });
-
-    response.embeded({
-      header: {
-        text: '',
-        img: '',
-        url: ''
-      },
-      imageHeader: '',
-      title: '',
-      body: [
-        {
-          title: '',
-          content: '',
-          fieldType: 'column'
-        }
-      ],
-      color: '',
-      footer: ''
+      ]
     });
     return;
   }
@@ -69,7 +53,7 @@ export const dev = async ({ content, response }: TCommand): Promise<void> => {
         response.general(`🛠️ El lenguaje \`${lang}\` esta en desarrollo`);
       } else {
         response.embeded({
-          header: COMMAND.name,
+          header: CMD.name,
           title: '❌ Error: `lenguaje invalido`',
           body: `\`${lang}\` no es un lenguaje valido, ` + 'intente con `js`',
           color: colorsList.error

@@ -1,8 +1,8 @@
 import { ScrapeMozilla } from '../modules/ScrapeMozilla';
 import { Format } from '~HELP/Format';
-import { getCommandData } from '~DATA/commandData';
+import { getCommandData } from '~DATA/command.data';
 
-const COMMAND = getCommandData('MIME');
+const CMD = getCommandData('MIME');
 
 export const mime = async ({ content, response }: TCommand): Promise<void> => {
   const ext = content.params[0];
@@ -11,12 +11,16 @@ export const mime = async ({ content, response }: TCommand): Promise<void> => {
 
   if (!ext) {
     response.embeded({
-      header: COMMAND.name,
-      title: '❌ Error: `parámetros faltantes`',
+      header: '❔ HELP',
+      title: CMD.name,
       body: [
         {
           title: 'Comando',
-          content: COMMAND.description
+          content: CMD.command
+        },
+        {
+          title: 'Descripción',
+          content: CMD.description
         },
         {
           title: 'Ejemplo',
@@ -33,7 +37,7 @@ export const mime = async ({ content, response }: TCommand): Promise<void> => {
     const mime = data.mime;
 
     response.embeded({
-      header: COMMAND.name,
+      header: CMD.name,
       title: `Descripción del medio \`${ext}\``,
       body: [
         {

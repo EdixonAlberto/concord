@@ -5,6 +5,7 @@ type TConfig = {
 
 type TCommandData = {
   name: string;
+  command: string;
   description: string;
 };
 
@@ -39,6 +40,12 @@ type TMime = {
   extension: string;
   typeDoc: string;
   typeMime: string;
+};
+
+type TCase = {
+  name: string;
+  description: string;
+  example: string;
 };
 
 /************************************ DECLARATIONS **************************************/
