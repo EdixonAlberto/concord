@@ -1,7 +1,7 @@
 # Concord
 
 A micro-framework to create Discord bots by abstracting the discord.js library. With
-concord you can create bots for discord quickly. 🚀
+concord you can create bots for Discord quickly. 🚀
 
 ## Create Bot
 

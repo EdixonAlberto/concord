@@ -48,6 +48,13 @@ type TCase = {
   example: string;
 };
 
+type TList =
+  | string
+  | {
+      title: string;
+      [key: string]: string;
+    };
+
 /************************************ DECLARATIONS **************************************/
 
 declare namespace NodeJS {

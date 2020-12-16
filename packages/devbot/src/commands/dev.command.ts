@@ -73,7 +73,7 @@ export const dev = async ({ content, response }: TCommand): Promise<void> => {
       body: [
         {
           title: 'Lista de posibles métodos',
-          content: Format.search(searchs)
+          content: Format.list(searchs)
         }
       ],
       footer: 'Escriba un número para hacer una elección. Escriba "cancel" para salir',
