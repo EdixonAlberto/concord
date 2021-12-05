@@ -1,17 +1,17 @@
 import { Message, MessageEmbed, EmbedFieldData } from 'discord.js';
-import { TEmbed, TField } from '@types';
+import { TColor, TEmbed, TField } from '@types';
 
 class BotResponse {
   private response: Message;
-  private defaultColor: string;
+  private defaultColor: TColor;
 
-  constructor(message: Message, color: string = '') {
+  constructor(message: Message, color: TColor = 'GOLD') {
     this.response = message;
     this.defaultColor = color;
   }
 
   public async embeded({
-    header,
+    header = '',
     imageHeader,
     title,
     body,
@@ -21,7 +21,7 @@ class BotResponse {
     const embed = new MessageEmbed();
 
     if (typeof header === 'string') embed.setAuthor(header);
-    else embed.setAuthor(header?.text, header?.img, header?.url);
+    else embed.setAuthor(header.text, header?.img, header?.url);
 
     if (imageHeader) embed.setThumbnail(imageHeader);
 
@@ -39,23 +39,21 @@ class BotResponse {
     }
 
     if (typeof footer === 'string') embed.setFooter(footer);
-    else embed.setFooter(footer?.text, footer?.img);
+    else embed.setFooter(footer.text, footer?.img);
 
     embed.setColor(color);
 
-    return await this.response.channel.send(embed);
+    return await this.response.channel.send({
+      embeds: [embed]
+    });
   }
 
   public async general(response: string): Promise<Message> {
-    return await this.response.channel.send(response, {
-      code: false
-    });
+    return await this.response.channel.send(response);
   }
 
   public async direct(response: string): Promise<Message> {
-    return await this.response.reply(response, {
-      code: false
-    });
+    return await this.response.reply(response);
   }
 }
 

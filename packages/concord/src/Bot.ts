@@ -1,4 +1,4 @@
-import { Client, Message } from 'discord.js';
+import { Client, Message, Intents } from 'discord.js';
 import { promises as fs } from 'fs';
 import { resolve } from 'path';
 
@@ -14,7 +14,14 @@ class Bot {
 
   constructor(_options: TOptions) {
     this.options = _options;
-    this.client = new Client();
+
+    const instents = this.options.intentsFlags.filter(
+      flag => flag !== Intents.FLAGS.GUILDS || flag !== Intents.FLAGS.GUILD_MESSAGES
+    );
+
+    this.client = new Client({
+      intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, ...instents]
+    });
     this.commandLoad(_options.commandsPath);
     this.event();
   }
@@ -23,14 +30,14 @@ class Bot {
     try {
       await this.client.login(this.options.token);
     } catch (error) {
-      console.log('!! ERROR-BOT ->', error.message);
+      console.log('!! ERROR-BOT ->', (error as Error).message);
     }
   }
 
   private event(): void {
     this.client.on('ready', () => console.log('>> BOT -> OK'));
 
-    this.client.on('message', (message: Message) => {
+    this.client.on('messageCreate', (message: Message) => {
       const { content } = new MessageProcessor(message);
       const response: BotResponse = new BotResponse(message, this.options.color);
 
@@ -55,7 +62,7 @@ class Bot {
         } else throw new Error(`Incorrect commnad: "${content.command}"`);
       } catch (error) {
         response.general('❌ Comando Incorrecto');
-        console.error('!! WARN-COMMAND-RUN ->', error.message);
+        console.error('!! WARN-COMMAND-RUN ->', (error as Error).message);
       }
     }
   }

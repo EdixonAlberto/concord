@@ -29,8 +29,13 @@ class MessageProcessor {
       command: prefixComand.substr(1) as TCommandList,
       params: words,
       message: () => message,
-      await: (filter: CollectorFilter, option?: AwaitMessagesOptions) =>
-        message.channel.awaitMessages(filter, { max: 1, time: 15000, ...option })
+      await: (filter: CollectorFilter<unknown[]>, option?: AwaitMessagesOptions) =>
+        message.channel.awaitMessages({
+          filter,
+          max: 1,
+          time: 15000,
+          ...option
+        })
     };
   }
 }

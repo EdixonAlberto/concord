@@ -1,13 +1,23 @@
-import { Message, CollectorFilter, AwaitMessagesOptions, Collection } from 'discord.js';
+import {
+  Message,
+  CollectorFilter,
+  AwaitMessagesOptions,
+  Collection,
+  ColorResolvable,
+  Intents
+} from 'discord.js';
+
+export type TColor = ColorResolvable;
 
 export type TOptions = {
   token: string;
   prefix: string;
-  color?: string;
+  color?: TColor;
   commandsPath?: string;
+  intentsFlags: Intents.FLAGS[];
 };
 
-export type TCommandList = import('@ENUM').commandsList & string;
+export type TCommandList = import('entities/enums').commandsList & string;
 
 export type TContent = {
   prefix: string;
@@ -29,7 +39,7 @@ export type TEmbed = {
   header:
     | string
     | {
-        text?: string;
+        text: string;
         img?: string;
         url?: string;
       };
@@ -39,10 +49,10 @@ export type TEmbed = {
   footer?:
     | string
     | {
-        text?: string;
+        text: string;
         img?: string;
       };
-  color?: string;
+  color?: TColor;
 };
 
 export type TField = {
@@ -53,6 +63,4 @@ export type TField = {
 
 /************************************ DECLARATIONS **************************************/
 
-declare namespace NodeJS {
-  interface Global {}
-}
+// declare var

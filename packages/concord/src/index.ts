@@ -1,4 +1,7 @@
+import { Intents } from 'discord.js';
 import { Bot } from './Bot';
 import { TCommand, TField } from '@types';
 
-export { Bot, TCommand, TField };
+const FLAGS = Intents.FLAGS;
+
+export { Bot, TCommand, TField, FLAGS };
