@@ -2,7 +2,6 @@
 .vscode/
 node_modules/
 dist/
-testbot/
 
 # FILES
 *.log
