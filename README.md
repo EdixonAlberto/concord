@@ -1,7 +1,7 @@
-# Monorepo - Discord Bots
+# Monorepo Concord
 
 <div align="center">
-  <img src="./.github/discord-bots.jpeg" alt="discord bots" width="60%" style="border-radius: 15px;" />
+  <img src="./images/discord-bots.jpeg" alt="discord bots" width="60%" style="border-radius: 15px;" />
 </div>
 
 ## Technologies in use

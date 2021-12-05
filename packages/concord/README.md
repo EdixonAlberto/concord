@@ -22,7 +22,7 @@ Create file in location: `./src/commands` with the following format:
 `[command_name].command.js`. Concord will automatically convert each file into executable
 commands.
 
-![command-file](./img/command-files.png)
+![command-file](../../img/command-files.png)
 
 You can also indicate the spefecific path where you want to save your commands.
 
@@ -53,7 +53,7 @@ export const commandName = async ({ content, response }: TCommand): Promise<void
 
 Concord contains a default command to test the connection with the bot.
 
-![command-ping](./img/command-ping.png)
+![command-ping](../../img/command-ping.png)
 
 ## Parameters
 
@@ -113,7 +113,7 @@ module.exports.response = async ({ content, response }) => {
 };
 ```
 
-![response](./img/response.png)
+![response](../../img/response.png)
 
 ### Content
 
@@ -159,4 +159,4 @@ module.exports.content = async ({ content, response }) => {
 };
 ```
 
-![content](./img/content.png)
+![content](../../img/content.png)
