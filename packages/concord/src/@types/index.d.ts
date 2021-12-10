@@ -1,41 +1,30 @@
-import {
-  Message,
-  CollectorFilter,
-  AwaitMessagesOptions,
-  Collection,
-  ColorResolvable,
-  Intents
-} from 'discord.js';
+type TColor = import('discord.js').ColorResolvable;
 
-export type TColor = ColorResolvable;
+type TCommandList = import('~ENUMS').commandsList & string;
 
-export type TOptions = {
-  token: string;
-  prefix: string;
-  color?: TColor;
-  commandsPath?: string;
-  intentsFlags: Intents.FLAGS[];
-};
-
-export type TCommandList = import('entities/enums').commandsList & string;
-
-export type TContent = {
+type TContent = {
   prefix: string;
   command: TCommandList;
   params: Array<string>;
-  message: () => Message;
+  message: () => import('discord.js').Message;
   await: (
-    filter: CollectorFilter,
-    options?: AwaitMessagesOptions
-  ) => Promise<Collection<string, Message>>;
+    filter: import('discord.js').CollectorFilter<unknown[]>,
+    options?: import('discord.js').AwaitMessagesOptions
+  ) => Promise<import('discord.js').Collection<string, import('discord.js').Message>>;
 };
 
-export type TCommand = {
+type TCommand = {
   content: TContent;
   response: import('BotResponse').BotResponse;
 };
 
-export type TEmbed = {
+type TField = {
+  title: string;
+  content: string;
+  fieldType?: 'row' | 'column';
+};
+
+type TEmbed = {
   header:
     | string
     | {
@@ -55,12 +44,6 @@ export type TEmbed = {
   color?: TColor;
 };
 
-export type TField = {
-  title: string;
-  content: string;
-  fieldType?: 'row' | 'column';
-};
-
-/************************************ DECLARATIONS **************************************/
+// DECLARATIONS ________________________________________________________________________________________________________
 
 // declare var

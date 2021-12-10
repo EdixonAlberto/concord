@@ -1,0 +1,7 @@
+# FOLDERS
+src/
+
+# FILES
+gulpfile.js
+tsconfig.json
+*.log

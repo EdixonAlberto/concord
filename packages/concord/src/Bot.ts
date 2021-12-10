@@ -5,33 +5,34 @@ import { resolve } from 'path';
 import { BotResponse } from './BotResponse';
 import { MessageProcessor } from './MessageProcessor';
 import * as commandsDefault from './commandsDefault';
-import { TOptions, TContent } from '@types';
+import { TOptions } from './types';
 
 class Bot {
-  private readonly options: TOptions;
+  private _options: TOptions;
   private client: Client;
   static commands: object = {};
 
-  constructor(_options: TOptions) {
-    this.options = _options;
-
-    const instents = this.options.intentsFlags.filter(
-      flag => flag !== Intents.FLAGS.GUILDS || flag !== Intents.FLAGS.GUILD_MESSAGES
-    );
-
-    this.client = new Client({
-      intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, ...instents]
-    });
-    this.commandLoad(_options.commandsPath);
+  constructor(options: TOptions) {
+    this._options = options;
+    this.client = this.createClient();
+    this.commandLoad();
     this.event();
   }
 
   public async start(): Promise<void> {
     try {
-      await this.client.login(this.options.token);
+      await this.client.login(this._options.token);
     } catch (error) {
       console.log('!! ERROR-BOT ->', (error as Error).message);
     }
+  }
+
+  private createClient(): Client {
+    const flags = this._options.intentsFlags || [];
+
+    return new Client({
+      intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, ...flags]
+    });
   }
 
   private event(): void {
@@ -39,14 +40,14 @@ class Bot {
 
     this.client.on('messageCreate', (message: Message) => {
       const { content } = new MessageProcessor(message);
-      const response: BotResponse = new BotResponse(message, this.options.color);
+      const response: BotResponse = new BotResponse(message, this._options.color);
 
       this.commandRun(content, response);
     });
   }
 
   private commandRun(content: TContent, response: BotResponse): void {
-    if (content.prefix === this.options.prefix) {
+    if (content.prefix === this._options.prefix) {
       console.log('>> COMMAND-RUN -> ' + JSON.stringify(content));
 
       // create pack commands

@@ -18,10 +18,6 @@
 
     /* Module Resolution Options */
     "moduleResolution": "node",
-    "baseUrl": "src",
-    "paths": {
-      "~ENUMS": ["entities/enums.ts"]
-    },
     "esModuleInterop": true,
 
     /* Advanced Options */

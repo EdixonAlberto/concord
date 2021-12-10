@@ -1,5 +1,4 @@
-import { Message, CollectorFilter, AwaitMessagesOptions } from 'discord.js';
-import { TCommandList, TContent } from '@types';
+import { Message } from 'discord.js';
 
 class MessageProcessor {
   private _content: TContent = {
@@ -29,7 +28,7 @@ class MessageProcessor {
       command: prefixComand.substr(1) as TCommandList,
       params: words,
       message: () => message,
-      await: (filter: CollectorFilter<unknown[]>, option?: AwaitMessagesOptions) =>
+      await: (filter, option) =>
         message.channel.awaitMessages({
           filter,
           max: 1,

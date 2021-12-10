@@ -1,0 +1,15 @@
+{
+  "name": "testbot-ts",
+  "version": "1.0.0",
+  "main": "dist/index.ts",
+  "license": "MIT",
+  "scripts": {
+    "start": "tsc && node dist"
+  },
+  "dependencies": {
+    "@edixon/concord": "1.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.2"
+  }
+}

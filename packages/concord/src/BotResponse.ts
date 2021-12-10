@@ -1,5 +1,4 @@
 import { Message, MessageEmbed, EmbedFieldData } from 'discord.js';
-import { TColor, TEmbed, TField } from '@types';
 
 class BotResponse {
   private response: Message;

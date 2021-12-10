@@ -2,11 +2,6 @@
   "name": "concord",
   "license": "MIT",
   "private": true,
-  "author": {
-    "name": "Edixon Piña",
-    "email": "edixonalbertto@gmail.com",
-    "url": "https://edixonalberto.com"
-  },
   "workspaces": [
     "packages/*"
   ],
@@ -22,8 +17,11 @@
       "packages/*"
     ],
     "verbose": false,
-    "exec": "yarn concord build && yarn testbot start",
-    "ignore": ["node_modules/", "dist/"]
+    "exec": "yarn concord dev && yarn testbot start",
+    "ignore": [
+      "node_modules/",
+      "dist/"
+    ]
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
