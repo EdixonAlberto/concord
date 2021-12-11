@@ -5,6 +5,7 @@ import { resolve } from 'path'
 import { BotResponse } from './BotResponse'
 import { MessageProcessor } from './MessageProcessor'
 import * as commandsDefault from './commandsDefault'
+import { configLoad } from './utils/configLoad'
 import { TOptions } from './types'
 
 class Bot {
@@ -15,20 +16,21 @@ class Bot {
   constructor(options: TOptions) {
     this._options = options
     this.client = this.createClient()
-    this.commandLoad()
-    this.event()
   }
 
   public async start(): Promise<void> {
     try {
-      await this.client.login(this._options.token)
+      await configLoad()
+      await this.client.login(this._options?.token || global.env.TOKEN)
+      this.commandLoad()
+      this.event()
     } catch (error) {
       console.log('!! ERROR-BOT ->', (error as Error).message)
     }
   }
 
-  private createClient(): Client {
-    const flags = this._options.intentsFlags || []
+  private createClient() {
+    const flags = this._options?.intentsFlags || []
 
     return new Client({
       intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, ...flags]
@@ -47,7 +49,9 @@ class Bot {
   }
 
   private commandRun(content: TContent, response: BotResponse): void {
-    if (content.prefix === this._options.prefix) {
+    const prefix = this._options.prefix || global.env.PREFIX
+
+    if (content.prefix === prefix) {
       console.log('>> COMMAND-RUN -> ' + JSON.stringify(content))
 
       // create pack commands

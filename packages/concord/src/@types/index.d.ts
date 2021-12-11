@@ -1,3 +1,11 @@
+type TNodeEnv = 'production' | 'development'
+
+type TEnv = {
+  TOKEN: string
+  PREFIX: string
+  FLAGS: number[]
+}
+
 type TColor = import('discord.js').ColorResolvable
 
 type TCommandList = import('~ENUMS').commandsList & string
@@ -46,4 +54,4 @@ type TEmbed = {
 
 // DECLARATIONS ________________________________________________________________________________________________________
 
-// declare var
+declare var env: TEnv
