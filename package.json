@@ -6,6 +6,7 @@
     "packages/*"
   ],
   "scripts": {
+    "lint": "prettier --write ./packages/**/*.{js,ts}",
     "concord": "yarn workspace @edixon/concord",
     "testbot": "yarn workspace testbot",
     "dev": "nodemon --config",
@@ -24,7 +25,8 @@
     ]
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "prettier": "^2.5.1"
   },
   "engines": {
     "node": "~16.13.0",

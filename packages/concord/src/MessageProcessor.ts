@@ -1,4 +1,4 @@
-import { Message } from 'discord.js';
+import { Message } from 'discord.js'
 
 class MessageProcessor {
   private _content: TContent = {
@@ -9,19 +9,19 @@ class MessageProcessor {
     // so that its data is not displayed in the log
     message: () => ({} as Message),
     await: {} as TContent['await']
-  };
+  }
 
   constructor(message: Message) {
-    this.contentExtract(message);
+    this.contentExtract(message)
   }
 
   public get content(): TContent {
-    return this._content;
+    return this._content
   }
 
   private contentExtract(message: Message): void {
-    const words = message.content.split(' ');
-    const prefixComand: string = words.shift() || '';
+    const words = message.content.split(' ')
+    const prefixComand: string = words.shift() || ''
 
     this._content = {
       prefix: message.content.substr(0, 1),
@@ -35,8 +35,8 @@ class MessageProcessor {
           time: 15000,
           ...option
         })
-    };
+    }
   }
 }
 
-export { MessageProcessor };
+export { MessageProcessor }
