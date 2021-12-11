@@ -24,7 +24,7 @@ function transpile(done) {
   done()
 }
 
-task('head', () => {
+task('header', () => {
   return src('dist/**/*.js')
     .pipe(
       headerComment(`

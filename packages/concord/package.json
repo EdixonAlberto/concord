@@ -14,8 +14,7 @@
   "types": "dist/@types/index.d.ts",
   "scripts": {
     "dev": "tsc && tsc-alias",
-    "build": "gulp build && gulp head",
-    "build2": "gulp build"
+    "build": "gulp build && gulp header"
   },
   "dependencies": {
     "discord.js": "^13.3.1"
