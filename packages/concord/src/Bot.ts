@@ -9,31 +9,35 @@ import { configLoad } from './utils/configLoad'
 import { TOptions } from './types'
 
 class Bot {
-  private _options: TOptions
+  private _options: TOptionsDefault
   private client: Client
   static commands: object = {}
 
   constructor(options: TOptions) {
-    this._options = options
+    this._options = {
+      token: options?.token || '',
+      prefix: options?.prefix || '',
+      color: options?.color || 'GOLD',
+      commandsPath: options?.commandsPath || resolve('src', 'commands'),
+      intentsFlags: options?.intentsFlags || []
+    }
     this.client = this.createClient()
+    this.commandLoad()
+    this.event()
   }
 
   public async start(): Promise<void> {
     try {
       await configLoad()
-      await this.client.login(this._options?.token || global.env.TOKEN)
-      this.commandLoad()
-      this.event()
+      await this.client.login(this._options.token || global.env.TOKEN)
     } catch (error) {
       console.log('!! ERROR-BOT ->', (error as Error).message)
     }
   }
 
   private createClient() {
-    const flags = this._options?.intentsFlags || []
-
     return new Client({
-      intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, ...flags]
+      intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, ...this._options.intentsFlags]
     })
   }
 
@@ -72,9 +76,9 @@ class Bot {
     }
   }
 
-  private async commandLoad(commandsPath?: string): Promise<void> {
+  private async commandLoad(): Promise<void> {
     // load commands from files
-    const path = commandsPath || resolve('src', 'commands')
+    const path = this._options.commandsPath
     const commandFiles = await fs.readdir(path)
 
     for (const file of commandFiles) {

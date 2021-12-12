@@ -3,7 +3,14 @@ type TNodeEnv = 'production' | 'development'
 type TEnv = {
   TOKEN: string
   PREFIX: string
-  FLAGS: number[]
+}
+
+type TOptionsDefault = {
+  token: string
+  prefix: string
+  color: TColor
+  commandsPath: string
+  intentsFlags: number[]
 }
 
 type TColor = import('discord.js').ColorResolvable

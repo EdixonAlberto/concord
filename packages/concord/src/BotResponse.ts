@@ -4,7 +4,7 @@ class BotResponse {
   private response: Message
   private defaultColor: TColor
 
-  constructor(message: Message, color: TColor = 'GOLD') {
+  constructor(message: Message, color: TColor) {
     this.response = message
     this.defaultColor = color
   }
