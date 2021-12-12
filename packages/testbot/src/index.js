@@ -1,8 +1,5 @@
-const { Bot } = require('@edixon/concord');
+const { Bot } = require('@edixon/concord')
 
-const bot = new Bot({
-  token: '',
-  prefix: ''
-});
+const bot = new Bot()
 
-bot.start();
+bot.start()
