@@ -1,2 +1,2 @@
-export { TOptions, FLAGS } from './types'
+export { TOptions, FLAGS } from '~ENTITIES/types'
 export { Bot } from './Bot'

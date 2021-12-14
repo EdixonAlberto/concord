@@ -5,17 +5,9 @@ type TEnv = {
   PREFIX: string
 }
 
-type TOptionsDefault = {
-  token: string
-  prefix: string
-  color: TColor
-  commandsPath: string
-  intentsFlags: number[]
-}
-
 type TColor = import('discord.js').ColorResolvable
 
-type TCommandList = import('~ENUMS').commandsList & string
+type TCommandList = 'ping' | string
 
 type TContent = {
   prefix: string

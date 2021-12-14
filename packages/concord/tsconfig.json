@@ -10,7 +10,6 @@
     "composite": true,
     "removeComments": true,
 
-
     /* Strict Type-Checking Options */
     "strict": true,
     "noImplicitAny": false,
@@ -20,7 +19,8 @@
     "moduleResolution": "node",
     "baseUrl": "src",
     "paths": {
-      "~ENUMS": ["entities/enums.ts"]
+      "~ENTITIES/*": ["entities/*"],
+      "~UTILS/*": ["utils/*"]
     },
     "esModuleInterop": true,
 

@@ -5,8 +5,8 @@ import { resolve } from 'path'
 import { BotResponse } from './BotResponse'
 import { MessageProcessor } from './MessageProcessor'
 import * as commandsDefault from './commandsDefault'
-import { configLoad } from './utils/configLoad'
-import { TOptions } from './types'
+import { configLoad } from '~UTILS/configLoad'
+import { TOptionsDefault, TOptions } from '~ENTITIES/types'
 
 class Bot {
   private _options: TOptionsDefault
@@ -53,7 +53,7 @@ class Bot {
   }
 
   private commandRun(content: TContent, response: BotResponse): void {
-    const prefix = this._options.prefix || global.env.PREFIX
+    const prefix = this._options.prefix || global.env.PREFIX || '$'
 
     if (content.prefix === prefix) {
       console.log('>> COMMAND-RUN -> ' + JSON.stringify(content))

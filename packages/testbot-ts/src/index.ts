@@ -1,6 +1,7 @@
-import { Bot } from '@edixon/concord';
+import { Bot, TOptions } from '@edixon/concord'
 
-const bot = new Bot({
-  token: '',
+const options: TOptions = {
   prefix: '>'
-});
+}
+
+new Bot(options)

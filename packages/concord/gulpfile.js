@@ -2,6 +2,7 @@ const { src, dest, task, series } = require('gulp')
 const prettier = require('gulp-prettier')
 const rimraf = require('gulp-rimraf')
 const { createProject } = require('gulp-typescript')
+const { replaceTscAliasPaths } = require('tsc-alias')
 const headerComment = require('gulp-header-comment')
 
 // TASKS _______________________________________________________________________________________________________________
@@ -17,12 +18,17 @@ function clean(done) {
 
 function transpile(done) {
   const tsProject = createProject('tsconfig.json')
-  const tsResult = tsProject.src().pipe(tsProject())
+  tsResult = tsProject.src().pipe(tsProject())
 
-  tsResult.dts.pipe(dest('dist/@types'))
-  tsResult.js.pipe(dest('dist'))
+  tsResult.pipe(dest('dist'))
   done()
 }
+
+task('alias', async () => {
+  return await replaceTscAliasPaths({
+    outDir: 'dist'
+  })
+})
 
 task('header', () => {
   return src('dist/**/*.js')
@@ -33,8 +39,10 @@ task('header', () => {
         Copyright (c) 2020-<%= moment().format('YYYY') %> <%= pkg.author.name %>
         Released under the <%= pkg.license %> License.`)
     )
-    .pipe(dest('dist/'))
+    .pipe(dest('dist'))
 })
 
 // RUN TASKS ___________________________________________________________________________________________________________
 task('build', series(format, clean, transpile))
+
+task('dev', series(clean, transpile))
