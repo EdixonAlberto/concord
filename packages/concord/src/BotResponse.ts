@@ -1,10 +1,10 @@
-import { Message, MessageEmbed, EmbedFieldData } from 'discord.js'
+import { Message, MessageEmbed, EmbedFieldData, ColorResolvable } from 'discord.js'
 
 class BotResponse {
   private response: Message
-  private defaultColor: TColor
+  private defaultColor: ColorResolvable
 
-  constructor(message: Message, color: TColor) {
+  constructor(message: Message, color: ColorResolvable) {
     this.response = message
     this.defaultColor = color
   }

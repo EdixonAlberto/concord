@@ -6,7 +6,7 @@ import { BotResponse } from './BotResponse'
 import { MessageProcessor } from './MessageProcessor'
 import * as commandsDefault from './commandsDefault'
 import { configLoad } from '~UTILS/configLoad'
-import { TOptionsDefault, TOptions } from '~ENTITIES/types'
+import { TOptionsDefault, TOptions, TContent } from '~ENTITIES/types'
 
 class Bot {
   private _options: TOptionsDefault

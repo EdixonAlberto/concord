@@ -1,4 +1,5 @@
 import { Message } from 'discord.js'
+import { TContent } from '~ENTITIES/types'
 
 class MessageProcessor {
   private _content: TContent = {
