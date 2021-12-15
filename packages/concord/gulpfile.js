@@ -2,7 +2,6 @@ const { src, dest, task, series } = require('gulp')
 const prettier = require('gulp-prettier')
 const rimraf = require('gulp-rimraf')
 const { createProject } = require('gulp-typescript')
-const { replaceTscAliasPaths } = require('tsc-alias')
 const headerComment = require('gulp-header-comment')
 
 // TASKS _______________________________________________________________________________________________________________
@@ -23,12 +22,6 @@ function transpile(done) {
   tsResult.pipe(dest('dist'))
   done()
 }
-
-task('alias', async () => {
-  return await replaceTscAliasPaths({
-    outDir: 'dist'
-  })
-})
 
 task('header', () => {
   return src('dist/**/*.js')

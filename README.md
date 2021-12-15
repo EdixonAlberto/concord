@@ -4,39 +4,57 @@
   <img src="./images/discord-bots.jpeg" alt="discord bots" width="60%" style="border-radius: 15px;" />
 </div>
 
-A micro-framework to create Discord bots by abstracting the **discord.js** library. With
-concord you can create bots for Discord quickly. 🚀
+Framework of Node.js to create bots to Discord. With concord you can create Discord bots quickly and easily. 🚀
 
 Created with Node.js and TypeScript, all types are exposed for use. &nbsp;
 <img src="https://github.com/EdixonAlberto/monorepo-css-battle/raw/main/.github/img/typescript.png" width="20px" alt="Logo typescript" /> +
 💗
 
----
+## Technologies in use
+
+- Node.js
+- TypeScript
+- discord.js
 
 ## Installation
 
-<!-- TODO: -->
+```sh
+npm install @edixon/concord
+```
 
----
-
-## Create Bot
+## Create an Bot
 
 Create an instance of a bot.
 
 ```js
-const { Bot } = require('@edixon/concord');
+const { Bot } = require('@edixon/concord')
 
 const bot = new Bot({
   token: 'DISCORD_TOKEN',
   prefix: '$'
-});
+})
+```
+
+You can also create the bot by passing the necessary values through environments variables.
+
+In root app create an file `.env`
+
+```env
+TOKEN=xxxxxxxxxxxxxxxxxxxxxxxx.xxxxxx.xxxxxxxxxxxxxxxxxxxxxxxxxxx
+PREFIX=$
+```
+
+Then with only 2 lines of code you can have the bot runrring.
+
+```js
+const { Bot } = require('@edixon/concord')
+new Bot().start()
 ```
 
 ## Command File
 
-Create file in location: `./src/commands` with the following format:
-`[command_name].command.js`. Concord will automatically convert each file into executable
-commands.
+Create file in location: `./src/commands` with the following format: `[command_name].command.js`. Concord will
+automatically convert each file into executable commands.
 
 ![command-file](./images/command-files.png)
 
@@ -45,26 +63,25 @@ You can also indicate the spefecific path where you want to save your commands.
 ```js
 const bot = new Bot({
   commandsPath: 'COMMANDS_PATH'
-});
+})
 ```
 
 ## Create Commands
 
-Commnad files can be interpreted as commands as long as they export a function with the
-command name.
+Commnad files can be interpreted as commands as long as they export a function with the command name.
 
 - javascript
 
 ```js
-module.exports.commandName = async ({ content, response }) => {};
+module.exports.commandName = async ({ content, response }) => {}
 ```
 
 - typescript
 
 ```ts
-type TCommand = import('@edixon/concord').TCommand;
+import { TCommand } from '@edixon/concord'
 
-export const commandName = async ({ content, response }: TCommand): Promise<void> => {};
+export const commandName = async ({ content, response }: TCommand): Promise<void> => {}
 ```
 
 Concord contains a default command to test the connection with the bot.
@@ -101,16 +118,16 @@ response.embeded({
   ],
   color: 'color in hexadecimal',
   footer: 'footer'
-});
+})
 ```
 
 Example:
 
 ```js
 module.exports.response = async ({ content, response }) => {
-  response.general('Message general');
+  response.general('Message general')
 
-  response.direct('Message direct');
+  response.direct('Message direct')
 
   response.embeded({
     header: 'Message Embeded',
@@ -125,8 +142,8 @@ module.exports.response = async ({ content, response }) => {
         content: 'Content body 2'
       }
     ]
-  });
-};
+  })
+}
 ```
 
 ![response](./images/response.png)
@@ -137,19 +154,19 @@ module.exports.response = async ({ content, response }) => {
 
 - `command [String]`: Contains the name of the commnand used.
 
-- `params [Array]`: Contains a list od messages sent after the command name. Only one
-  should be used to separate messages.
+- `params [Array]`: Contains a list od messages sent after the command name. Only one should be used to separate
+  messages.
 
-- `message [Function]`: Return an object containing the "message" instance with all the
-  properties described in the Message class of discord.js.
+- `message [Function]`: Return an object containing the "message" instance with all the properties described in the
+  Message class of discord.js.
 
 Example:
 
 ```js
 module.exports.content = async ({ content, response }) => {
-  const { prefix, command, params, message } = content;
+  const { prefix, command, params, message } = content
 
-  const bot = message().channel.client.user.username;
+  const bot = message().channel.client.user.username
 
   response.embeded({
     header: 'CONTENT',
@@ -171,18 +188,11 @@ module.exports.content = async ({ content, response }) => {
         content: bot
       }
     ]
-  });
-};
+  })
+}
 ```
 
 ![content](./images/content.png)
-
-## Technologies in use
-
-- Node.js
-- TypeScript
-- Yarn Workspces
-- discord.js
 
 ## License
 

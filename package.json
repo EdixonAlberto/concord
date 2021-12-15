@@ -8,7 +8,7 @@
   "scripts": {
     "lint": "prettier --write ./packages/**/*.{js,ts}",
     "concord": "yarn workspace @edixon/concord",
-    "testbot": "yarn workspace testbot",
+    "testbot": "yarn workspace testbot-ts",
     "dev": "nodemon --config",
     "build": "node ./build"
   },
