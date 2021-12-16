@@ -3,6 +3,7 @@ type TNodeEnv = 'production' | 'development'
 type TEnv = {
   TOKEN: string
   PREFIX: string
+  MODE_DEV: boolean
 }
 
 type TCommandList = 'ping' | string

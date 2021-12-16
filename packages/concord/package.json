@@ -19,9 +19,11 @@
   },
   "dependencies": {
     "discord.js": "^13.3.1",
-    "dotenv": "^10.0.0"
+    "dotenv": "^10.0.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@types/uuid": "^8.3.3",
     "gulp": "^4.0.2",
     "gulp-header-comment": "^0.10.0",
     "gulp-prettier": "^4.0.0",
