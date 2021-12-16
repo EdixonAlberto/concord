@@ -1,7 +1,9 @@
 # FOLDERS
+node_modules/
 src/
 
 # FILES
 gulpfile.js
 tsconfig.json
 *.log
+tsconfig.tsbuildinfo

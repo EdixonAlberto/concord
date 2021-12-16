@@ -1,6 +1,6 @@
 {
   "name": "@edixon/concord",
-  "description": "Framework of Node.js to create bots to Discord",
+  "description": "Framework of Node.js to create Discord bots",
   "version": "1.0.0",
   "license": "MIT",
   "private": false,
@@ -9,13 +9,23 @@
     "email": "edixonalbertto@gmail.com",
     "url": "https://edixonalberto.com"
   },
-  "keywords": [],
+  "keywords": [
+    "nodejs",
+    "typescript",
+    "discord-bot",
+    "discord-js",
+    "framework",
+    "gulpjs",
+    "yarn-workspaces",
+    "bot"
+  ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "alias": "tsc-alias",
     "dev": "gulp dev && yarn alias",
-    "build": "gulp build && yarn alias && gulp header"
+    "build": "gulp build && yarn alias && gulp header",
+    "try-publish": "yarn build && npm publish --dry-run"
   },
   "dependencies": {
     "discord.js": "^13.3.1",

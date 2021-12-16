@@ -2,3 +2,4 @@ node_modules/
 dist/
 *.json
 tsconfig.tsbuildinfo
+LICENSE

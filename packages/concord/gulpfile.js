@@ -30,7 +30,7 @@ task('header', () => {
         <%= pkg.name %> v<%= pkg.version %>
         <%=pkg.description %>
         Copyright (c) 2020-<%= moment().format('YYYY') %> <%= pkg.author.name %>
-        Released under the <%= pkg.license %> License.`)
+        Released under the <%= pkg.license %> License`)
     )
     .pipe(dest('dist'))
 })
