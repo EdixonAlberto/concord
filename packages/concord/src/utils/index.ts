@@ -8,7 +8,7 @@ export function id(mini: boolean = false): string {
 }
 
 export function logger(title: string, message: string, dev: boolean = false): void {
-  if (dev && global.env.MODE_DEV) {
+  if (!dev || global.env.MODE_DEV) {
     console.log(`${title} ->`, message)
   }
 }

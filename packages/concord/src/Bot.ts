@@ -10,7 +10,9 @@ import { id, logger } from '~UTILS'
 import { TOptionsDefault, TOptions, TContent } from '~ENTITIES/types'
 
 class Bot {
-  static client: Client
+  private static client: Client
+  private static token: string
+  private static prefix: string
   private _options: TOptionsDefault
   private commands: object = {}
   private botID: string
@@ -29,10 +31,14 @@ class Bot {
   public async start(): Promise<void> {
     try {
       await configLoad()
+
+      Bot.token = this._options.token || global.env.TOKEN
+      Bot.prefix = this._options.prefix || global.env.PREFIX || '$'
+
       await this.createClient()
       await this.commandsLoad()
       this.eventsLoad()
-      logger('BOT', `Instance "${this.botID}" create successfully`)
+      logger('BOT', `Instance ${this.botID} create successfully`)
     } catch (error) {
       logger('ERROR-BOT', (error as Error).message)
     }
@@ -41,23 +47,40 @@ class Bot {
   private async createClient(): Promise<boolean | Error> {
     return new Promise(async (resolve, reject) => {
       try {
-        Bot.client = new Client({
+        const client = new Client({
           intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, ...this._options.intentsFlags]
         })
 
-        await Bot.client.login(this._options.token || global.env.TOKEN)
-        resolve(true)
+        await client.login(Bot.token)
+
+        client.on('ready', () => {
+          Bot.client = client
+          logger('BOT', `Bot logged in as ${client?.user?.tag}`)
+          resolve(true)
+        })
       } catch (error) {
         reject(error)
       }
     })
   }
 
-  private eventsLoad(): void {
-    Bot.client.on('ready', () => {
-      logger('BOT', `Bot logged in as ${Bot.client?.user?.tag}`)
-    })
+  private async commandsLoad(): Promise<void> {
+    // load commands from files
+    const path = this._options.commandsPath
+    const commandFiles = await fs.readdir(path)
 
+    // Load message commands
+    for (const file of commandFiles) {
+      // Verify the name of the command files
+      if (file.search(/[a-z0-9]*\.command\.js/) > -1) {
+        const command = await import(resolve(path, file))
+        // create commands object
+        this.commands = { ...this.commands, ...command }
+      }
+    }
+  }
+
+  private eventsLoad(): void {
     Bot.client.on('messageCreate', (message: Message) => {
       const { content } = new MessageProcessor(message)
       const response: BotResponse = new BotResponse(message, this._options.color)
@@ -67,9 +90,7 @@ class Bot {
   }
 
   private commandRun(content: TContent, response: BotResponse): void {
-    const prefix = this._options.prefix || global.env.PREFIX || '$'
-
-    if (content.prefix === prefix) {
+    if (content.prefix === Bot.prefix) {
       logger('COMMAND-RUN', JSON.stringify(content), true)
 
       // create pack commands
@@ -86,21 +107,6 @@ class Bot {
       } catch (error) {
         response.general('❌ Comando Incorrecto')
         logger('COMMAND-RUN', (error as Error).message, true)
-      }
-    }
-  }
-
-  private async commandsLoad(): Promise<void> {
-    // load commands from files
-    const path = this._options.commandsPath
-    const commandFiles = await fs.readdir(path)
-
-    for (const file of commandFiles) {
-      // Verify the name of the command files
-      if (file.search(/[a-z0-9]*\.command\.js/) > -1) {
-        const command = await import(resolve(path, file))
-        // create commands object
-        this.commands = { ...this.commands, ...command }
       }
     }
   }
