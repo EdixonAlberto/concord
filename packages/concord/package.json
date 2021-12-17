@@ -28,6 +28,8 @@
     "try-publish": "yarn build && npm publish --dry-run"
   },
   "dependencies": {
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "discord-api-types": "^0.25.2",
     "discord.js": "^13.3.1",
     "dotenv": "^10.0.0",
     "uuid": "^8.3.2"
