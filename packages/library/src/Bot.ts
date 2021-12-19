@@ -32,13 +32,15 @@ class Bot {
     try {
       await configLoad()
 
-      Bot.token = this._options.token || global.env.TOKEN
-      Bot.prefix = this._options.prefix || global.env.PREFIX || '$'
+      Bot.token = this._options.token || global.env?.TOKEN || ''
+      Bot.prefix = this._options.prefix || global.env?.PREFIX || '$'
 
       await this.createClient()
       await this.commandsLoad()
       this.eventsLoad()
+
       logger('BOT', `Instance ${this.botID} create successfully`)
+      logger('BOT', `Listening prefix ${Bot.prefix}`)
     } catch (error) {
       logger('ERROR-BOT', (error as Error).message)
     }
@@ -55,7 +57,7 @@ class Bot {
 
         client.on('ready', () => {
           Bot.client = client
-          logger('BOT', `Bot logged in as ${client?.user?.tag}`)
+          logger('BOT', `Logged in as ${client?.user?.tag}`)
           resolve(true)
         })
       } catch (error) {

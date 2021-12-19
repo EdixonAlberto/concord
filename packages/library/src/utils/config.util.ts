@@ -14,13 +14,14 @@ async function configLoad(): Promise<void> {
   } finally {
     const result = config({ path })
 
-    if (result.error) throw new Error(result.error.message)
-    else {
+    if (!result.error) {
       console.log(`ENV -> Environment "${basename(path)}" loaded successfully`)
-      global.env = {
-        ...(process.env as unknown as TEnv),
-        MODE_DEV: NODE_ENV === 'development'
-      }
+      global.env = process.env as unknown as TEnv
+    }
+
+    global.env = {
+      ...global.env,
+      MODE_DEV: NODE_ENV === 'development'
     }
   }
 }

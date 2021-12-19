@@ -1,8 +1,8 @@
 type TNodeEnv = 'production' | 'development'
 
 type TEnv = {
-  TOKEN: string
-  PREFIX: string
+  TOKEN?: string
+  PREFIX?: string
   MODE_DEV: boolean
 }
 
