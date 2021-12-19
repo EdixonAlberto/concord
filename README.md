@@ -25,4 +25,4 @@ Created with Node.js and TypeScript, all types are exposed for use. &nbsp;
 - gulp.js
 - yarn workspaces
 
-## [Documentation &#x279c;](./packages/concord)
+## [Documentation &#x279c;](./packages/library)

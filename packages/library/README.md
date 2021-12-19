@@ -27,14 +27,13 @@ npm install @edixon/concord
 
 Create an instance of a bot.
 
-- javascript
-
 ```js
 const { Bot } = require('@edixon/concord')
 
 const bot = new Bot({
   token: 'DISCORD_TOKEN',
   prefix: '$'
+  // ...
 })
 
 bot.start()
@@ -70,7 +69,7 @@ point to the path "outDir" indicated in the `tsconfig.json` file.
 import { Bot } from '@edixon/concord'
 
 const bot = new Bot({
-  commandsPath: 'dist/commands'
+  commandsPath: './dist/commands'
 })
 ```
 
@@ -96,7 +95,7 @@ export const commandName = async ({ content, response }: TCommand): Promise<void
 }
 ```
 
-Concord contains a default command to test the connection with the bot.
+Concord contains a default command called `"ping"` to test the connection with the bot.
 
 ![command-ping](https://github.com/EdixonAlberto/concord/raw/dev/images/command-ping.png)
 
@@ -110,7 +109,9 @@ Concord contains a default command to test the connection with the bot.
 
 - `embeded [Function]`: Send an embeded message
 
-Example:
+Command File:
+
+`src/commands/responde.command.js`
 
 ```js
 module.exports.response = async ({ content, response }) => {
@@ -135,6 +136,8 @@ module.exports.response = async ({ content, response }) => {
 }
 ```
 
+Result:
+
 ![response](https://github.com/EdixonAlberto/concord/raw/dev/images/response.png)
 
 ### 2. Content
@@ -149,7 +152,9 @@ module.exports.response = async ({ content, response }) => {
 - `message [Function]`: Return an object containing the "message" instance with all the properties described in the
   Message class of discord.js.
 
-Example:
+Command File:
+
+`src/commands/content.command.js`
 
 ```js
 module.exports.content = async ({ content, response }) => {
@@ -180,6 +185,8 @@ module.exports.content = async ({ content, response }) => {
   })
 }
 ```
+
+Result:
 
 ![content](https://github.com/EdixonAlberto/concord/raw/dev/images/content.png)
 
