@@ -41,5 +41,10 @@
     "gulp-typescript": "^6.0.0-alpha.1",
     "tsc-alias": "^1.5.0",
     "typescript": "^4.5.2"
+  },
+  "homepage": "https://github.com/EdixonAlberto/concord/tree/main/packages/concord#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EdixonAlberto/concord/tree/main"
   }
 }

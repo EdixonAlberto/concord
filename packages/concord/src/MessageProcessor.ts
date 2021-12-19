@@ -6,8 +6,10 @@ class MessageProcessor {
     prefix: '',
     command: '' as TCommandList,
     params: [],
-    // The property "message" is used from a function
-    // so that its data is not displayed in the log
+    /* 
+      The property "message" is used from a function
+      so that its data is not displayed in the log
+    */
     message: () => ({} as Message),
     await: {} as TContent['await']
   }
