@@ -1,26 +1,28 @@
-# Monorepo - Discord Bots
+# Concord
 
 <div align="center">
-  <img src="./.github/discord-bots.jpeg" alt="discord bots" width="60%" style="border-radius: 15px;" />
+  <img src="images/discord-bots.png" alt="discord bots" width="60%" style="border-radius: 15px;" />
 </div>
+
+[![](https://img.shields.io/badge/author-Edixon_Piña-green?style=for-the-badge)](https://edixonalberto.com)
+[![](https://img.shields.io/npm/v/@edixon/concord?color=CB0000&style=for-the-badge)](https://npmjs.com/package/@edixon/concord)
+[![](https://img.shields.io/npm/dt/@edixon/concord?color=8956FF&style=for-the-badge)](https://npmjs.com/package/@edixon/concord)
+
+[![](https://img.shields.io/badge/types-TypeScript-blue?style=for-the-badge)](https://github.com/microsoft/TypeScript)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=for-the-badge)](https://github.com/prettier/prettier)
+
+Framework of Node.js to create Discord bots. With Concord you can create Discord bots quickly and easily. 🚀
+
+Created with Node.js and TypeScript, all types are exposed for use. &nbsp;
+<img src="https://github.com/EdixonAlberto/monorepo-css-battle/raw/main/.github/img/typescript.png" width="20px" alt="Logo typescript" /> +
+💗
 
 ## Technologies in use
 
-- Typescript
-- Yarn Workspces
-- other...
+- Node.js
+- TypeScript
+- discord.js
+- gulp.js
+- yarn workspaces
 
-## Packages
-
-- [Concord](###concord): micro-framework to abstract the development of discord bots
-  theourgh the **discord.js** library.
-
-- [Devbot](###devbot): discord bot tha help in programmming learning
-
-### Concord
-
-Detail in development...
-
-### Devbot
-
-Detail in development...
+## [Documentation &#x279c;](./packages/library)

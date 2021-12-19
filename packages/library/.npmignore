@@ -1,11 +1,9 @@
 # FOLDERS
-.vscode/
 node_modules/
-dist/
-testbot/
-testbot-ts/
+src/
 
 # FILES
+gulpfile.js
+tsconfig.json
 *.log
-.env
 tsconfig.tsbuildinfo

@@ -1,24 +1,35 @@
 {
-  "name": "monorepo-discord-bots",
-  "version": "1.0.0",
+  "name": "concord",
   "license": "MIT",
   "private": true,
-  "author": {
-    "name": "Edixon Piña",
-    "email": "edixonalbertto@gmail.com",
-    "url": "https://www.edixonalberto.com"
-  },
-  "scripts": {
-    "concord": "yarn workspace @edixon/concord",
-    "devbot": "yarn workspace devbot",
-    "testbot": "yarn concord build && yarn workspace testbot",
-    "build": "node ./build"
-  },
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "lint": "prettier --write ./packages/**/*.{js,ts}",
+    "concord": "yarn workspace @edixon/concord",
+    "testbot": "yarn workspace testbot-ts",
+    "dev": "nodemon --config",
+    "build": "node ./build"
+  },
+  "nodemonConfig": {
+    "ext": ".ts,.js,.env",
+    "watch": [
+      "packages/*"
+    ],
+    "verbose": false,
+    "exec": "yarn concord dev && yarn testbot start",
+    "ignore": [
+      "node_modules/",
+      "dist/"
+    ]
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15",
+    "prettier": "^2.5.1"
+  },
   "engines": {
-    "node": "^12.18.0",
-    "yarn": "^1.22.0"
+    "node": "~16.13.0",
+    "yarn": "~1.22.0"
   }
 }
