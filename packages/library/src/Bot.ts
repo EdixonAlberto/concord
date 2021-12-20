@@ -7,14 +7,16 @@ import { MessageProcessor } from './MessageProcessor'
 import * as commandsDefault from './commandsDefault'
 import { configLoad } from '~UTILS/config.util'
 import { id, logger } from '~UTILS'
-import { TOptionsDefault, TOptions, TContent } from '~ENTITIES/types'
+import { TOptionsDefault, TOptions } from '~ENTITIES/types'
 
 class Bot {
+  private readonly MESSAGE_CMD_FILE = 'message.command.js'
   private static client: Client
   private static token: string
   private static prefix: string
+  private static tag: string
   private _options: TOptionsDefault
-  private commands: object = {}
+  private commands: { message?: TCommand } = {}
   private botID: string
 
   constructor(options?: TOptions) {
@@ -39,7 +41,7 @@ class Bot {
       await this.commandsLoad()
       this.eventsLoad()
 
-      logger('BOT', `Instance ${this.botID} create successfully`)
+      logger('BOT', `Instance ${this.botID} created successfully`)
       logger('BOT', `Listening prefix ${Bot.prefix}`)
     } catch (error) {
       logger('ERROR-BOT', (error as Error).message)
@@ -57,7 +59,8 @@ class Bot {
 
         client.on('ready', () => {
           Bot.client = client
-          logger('BOT', `Logged in as ${client?.user?.tag}`)
+          Bot.tag = client!.user!.tag
+          logger('BOT', `Logged in as ${Bot.tag}`)
           resolve(true)
         })
       } catch (error) {
@@ -69,12 +72,18 @@ class Bot {
   private async commandsLoad(): Promise<void> {
     // load commands from files
     const path = this._options.commandsPath
+    const messageCmdPath = resolve(path, this.MESSAGE_CMD_FILE)
     const commandFiles = await fs.readdir(path)
+
+    try {
+      await fs.access(messageCmdPath)
+      this.commands.message = (await import(messageCmdPath)) as TCommand
+    } catch (_) {}
 
     // Load message commands
     for (const file of commandFiles) {
       // Verify the name of the command files
-      if (file.search(/[a-z0-9]*\.command\.js/) > -1) {
+      if (file.search(/[a-z0-9]*\.command\.js/i) > -1) {
         const command = await import(resolve(path, file))
         // create commands object
         this.commands = { ...this.commands, ...command }
@@ -87,13 +96,13 @@ class Bot {
       const { content } = new MessageProcessor(message)
       const response: BotResponse = new BotResponse(message, this._options.color)
 
-      this.commandRun(content, response)
+      this.commandRun({ content, response })
     })
   }
 
-  private commandRun(content: TContent, response: BotResponse): void {
+  private commandRun({ content, response }: TParams): void {
     if (content.prefix === Bot.prefix) {
-      logger('COMMAND-RUN', JSON.stringify(content), true)
+      logger('COMMAND', JSON.stringify(content), true)
 
       // create pack commands
       const commandsPack = {
@@ -108,7 +117,16 @@ class Bot {
         } else throw new Error(`Incorrect commnad: "${content.command}"`)
       } catch (error) {
         response.general('❌ Comando Incorrecto')
-        logger('COMMAND-RUN', (error as Error).message, true)
+        logger('COMMAND', (error as Error).message, true)
+      }
+    }
+
+    // Run command message
+    if (this.commands.message) {
+      const messageAuthor = content.message().author.tag
+
+      if (messageAuthor !== Bot.tag) {
+        this.commands.message({ content, response })
       }
     }
   }

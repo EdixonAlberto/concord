@@ -10,6 +10,8 @@ type TCommandList = 'ping' | string
 
 type TCommand = import('~ENTITIES/types').TCommand
 
+type TParams = import('~ENTITIES/types').TParams
+
 type TField = {
   title: string
   content: string

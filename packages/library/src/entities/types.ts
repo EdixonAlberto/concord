@@ -21,7 +21,9 @@ export type TContent = {
   await: (filter: CollectorFilter<unknown[]>, options?: AwaitMessagesOptions) => Promise<Collection<string, Message>>
 }
 
-export type TCommand = {
+export type TParams = {
   content: TContent
   response: BotResponse
 }
+
+export type TCommand = (params: TParams) => Promise<void>

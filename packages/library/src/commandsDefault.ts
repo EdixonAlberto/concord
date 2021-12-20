@@ -1,4 +1,4 @@
-export const ping = ({ content, response }: TCommand): void => {
+export const ping: TCommand = async ({ content, response }): Promise<void> => {
   const dateMessage = content.message().createdTimestamp
   const dateNow = Date.now()
 

@@ -57,7 +57,7 @@ new Bot().start()
 
 ## Command File
 
-Create file in location: `./src/commands` with the following format: `[command_name].command.js`. Concord will
+Create file in location: `./src/commands` with the following format: `[commandName].command.js`. Concord will
 automatically convert each file into executable commands.
 
 ![command-file](https://github.com/EdixonAlberto/concord/raw/dev/images/command-files.png)
@@ -90,7 +90,7 @@ module.exports.commandName = async ({ content, response }) => {
 ```ts
 import { TCommand } from '@edixon/concord'
 
-export const commandName = async ({ content, response }: TCommand): Promise<void> => {
+export const commandName: TCommand = async ({ content, response }): Promise<void> => {
   // code
 }
 ```
@@ -98,6 +98,15 @@ export const commandName = async ({ content, response }: TCommand): Promise<void
 Concord contains a default command called `"ping"` to test the connection with the bot.
 
 ![command-ping](https://github.com/EdixonAlberto/concord/raw/dev/images/command-ping.png)
+
+lastly, if you create a command called `message.command.js`, all messages sent by users will be received here except
+those sent by the same bot.
+
+```js
+module.exports.message = async ({ content: { message } }) => {
+  console.log(message().content)
+}
+```
 
 ## Parameters
 
@@ -114,7 +123,7 @@ Command File:
 `src/commands/responde.command.js`
 
 ```js
-module.exports.response = async ({ content, response }) => {
+module.exports.response = async ({ response }) => {
   response.general('Message general')
 
   response.direct('Message direct')
@@ -160,11 +169,16 @@ Command File:
 module.exports.content = async ({ content, response }) => {
   const { prefix, command, params, message } = content
 
+  const messageContent = message().content
   const bot = message().channel.client.user.username
 
   response.embeded({
     header: 'CONTENT',
     body: [
+      {
+        title: 'content',
+        content: messageContent
+      },
       {
         title: 'prefix',
         content: prefix
