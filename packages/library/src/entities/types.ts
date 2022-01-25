@@ -1,5 +1,5 @@
 import { Intents, ColorResolvable, Message, CollectorFilter, AwaitMessagesOptions, Collection } from 'discord.js'
-import { BotResponse } from '../BotResponse'
+import { BotResponse } from '~CORE/BotResponse'
 
 export const FLAGS = Intents.FLAGS
 

@@ -1,5 +1,5 @@
 import { Collection, Channel } from 'discord.js'
-import { BotResponse } from '../BotResponse'
+import { BotResponse } from '~CORE/BotResponse'
 import { TChannels } from '~ENTITIES/types'
 
 class ChannelsProcessor {
