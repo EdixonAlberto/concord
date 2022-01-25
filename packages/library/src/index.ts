@@ -1,2 +1,2 @@
-export { TOptions, FLAGS, TCommand } from '~ENTITIES/types'
+export { TOptions, FLAGS, TCommand, TMessage, TChannels } from '~ENTITIES/types'
 export { Bot } from './Bot'

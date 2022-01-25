@@ -1,13 +1,13 @@
-import { Client, Message, Intents } from 'discord.js'
+import { Client, Intents } from 'discord.js'
 import { promises as fs } from 'fs'
 import { resolve } from 'path'
 
 import { BotResponse } from './BotResponse'
 import { MessageProcessor } from './MessageProcessor'
 import * as commandsDefault from './commandsDefault'
-import { configLoad } from '~UTILS/config.util'
-import { id, logger } from '~UTILS'
+import { id, logger, configLoad } from '~UTILS'
 import { TOptionsDefault, TOptions } from '~ENTITIES/types'
+import { ChannelsProcessor } from '~CORE/ChannelsProcessor'
 
 class Bot {
   private readonly MESSAGE_CMD_FILE = 'message.command.js'
@@ -92,15 +92,16 @@ class Bot {
   }
 
   private eventsLoad(): void {
-    Bot.client.on('messageCreate', (message: Message) => {
+    Bot.client.on('messageCreate', (message: TMessage) => {
       const { content } = new MessageProcessor(message)
-      const response: BotResponse = new BotResponse(message, this._options.color)
+      const response: BotResponse = new BotResponse(message.channel, this._options.color)
+      const channels = ChannelsProcessor.cache(Bot.client.channels.cache)
 
-      this.commandRun({ content, response })
+      this.commandRun({ content, response, channels })
     })
   }
 
-  private commandRun({ content, response }: TParams): void {
+  private commandRun({ content, response, channels }: TParams): void {
     if (content.prefix === Bot.prefix) {
       logger('COMMAND', JSON.stringify(content), true)
 
@@ -113,7 +114,7 @@ class Bot {
       try {
         if (commandsPack[content.command]) {
           // Execute command dynamically
-          commandsPack[content.command]({ content, response })
+          commandsPack[content.command]({ content, response, channels })
         } else throw new Error(`Incorrect commnad: "${content.command}"`)
       } catch (error) {
         response.general('❌ Comando Incorrecto')
@@ -126,7 +127,7 @@ class Bot {
       const messageAuthor = content.message().author.tag
 
       if (messageAuthor !== Bot.tag) {
-        this.commands.message({ content, response })
+        this.commands.message({ content, response, channels })
       }
     }
   }

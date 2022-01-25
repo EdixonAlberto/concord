@@ -1,11 +1,11 @@
-import { Message, MessageEmbed, EmbedFieldData, ColorResolvable } from 'discord.js'
+import { Message, MessageEmbed, EmbedFieldData, ColorResolvable, TextChannel } from 'discord.js'
 
 class BotResponse {
-  private response: Message
+  private channel: TextChannel
   private defaultColor: ColorResolvable
 
-  constructor(message: Message, color: ColorResolvable) {
-    this.response = message
+  constructor(channel: TChannel, color: ColorResolvable = 'GOLD') {
+    this.channel = channel as TextChannel
     this.defaultColor = color
   }
 
@@ -42,17 +42,20 @@ class BotResponse {
 
     embed.setColor(color)
 
-    return await this.response.channel.send({
+    return await this.channel.send({
       embeds: [embed]
     })
   }
 
-  public async general(response: string): Promise<Message> {
-    return await this.response.channel.send(response)
+  public async general(response: string): Promise<TMessage> {
+    return await this.channel.send(response)
   }
 
-  public async direct(response: string): Promise<Message> {
-    return await this.response.reply(response)
+  public async direct(response: string): Promise<TMessage | undefined> {
+    // TODO: encontrar la manera de hacer un reply desde otro canal
+    const channel = this.channel as unknown as Message
+
+    if (channel?.reply) return await channel.reply(response)
   }
 }
 

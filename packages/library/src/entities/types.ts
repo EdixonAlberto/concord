@@ -13,17 +13,22 @@ export type TOptionsDefault = {
 
 export type TOptions = Partial<TOptionsDefault>
 
+export type TMessage = Message<boolean>
+
 export type TContent = {
   prefix: string
   command: TCommandList
   params: Array<string>
-  message: () => Message
-  await: (filter: CollectorFilter<unknown[]>, options?: AwaitMessagesOptions) => Promise<Collection<string, Message>>
+  message: () => TMessage
+  await: (filter: CollectorFilter<unknown[]>, options?: AwaitMessagesOptions) => Promise<Collection<string, TMessage>>
 }
+
+export type TChannels = Map<string, BotResponse>
 
 export type TParams = {
   content: TContent
   response: BotResponse
+  channels: TChannels
 }
 
 export type TCommand = (params: TParams) => Promise<void>

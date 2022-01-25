@@ -20,7 +20,7 @@
     "baseUrl": "src",
     "paths": {
       "~ENTITIES/*": ["entities/*"],
-      "~UTILS/*": ["utils/*"],
+      "~CORE/*": ["core/*"],
       "~UTILS": ["utils/index.ts"]
     },
     "esModuleInterop": true,

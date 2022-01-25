@@ -8,6 +8,10 @@ type TEnv = {
 
 type TCommandList = 'ping' | string
 
+type TChannel = TMessage['channel'] | import('discord.js').Channel
+
+type TMessage = import('~ENTITIES/types').TMessage
+
 type TCommand = import('~ENTITIES/types').TCommand
 
 type TParams = import('~ENTITIES/types').TParams

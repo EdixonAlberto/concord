@@ -1,4 +1,3 @@
-import { Message } from 'discord.js'
 import { TContent } from '~ENTITIES/types'
 
 class MessageProcessor {
@@ -6,15 +5,15 @@ class MessageProcessor {
     prefix: '',
     command: '' as TCommandList,
     params: [],
-    /* 
+    /*
       The property "message" is used from a function
       so that its data is not displayed in the log
     */
-    message: () => ({} as Message),
+    message: () => ({} as TMessage),
     await: {} as TContent['await']
   }
 
-  constructor(message: Message) {
+  constructor(message: TMessage) {
     this.contentExtract(message)
   }
 
@@ -22,13 +21,13 @@ class MessageProcessor {
     return this._content
   }
 
-  private contentExtract(message: Message): void {
+  private contentExtract(message: TMessage): void {
     const words = message.content.split(' ')
     const prefixComand: string = words.shift() || ''
 
     this._content = {
-      prefix: message.content.substr(0, 1),
-      command: prefixComand.substr(1) as TCommandList,
+      prefix: message.content.substring(0, 1),
+      command: prefixComand.substring(1) as TCommandList,
       params: words,
       message: () => message,
       await: (filter, option) =>
