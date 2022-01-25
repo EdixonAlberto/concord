@@ -1,4 +1,5 @@
 import { Message, MessageEmbed, EmbedFieldData, ColorResolvable, TextChannel } from 'discord.js'
+import { TEmbed, TField } from '~ENTITIES/types'
 
 class BotResponse {
   private channel: TextChannel

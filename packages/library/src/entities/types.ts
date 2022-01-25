@@ -32,3 +32,29 @@ export type TParams = {
 }
 
 export type TCommand = (params: TParams) => Promise<void>
+
+export type TField = {
+  title: string
+  content: string
+  fieldType?: 'row' | 'column'
+}
+
+export type TEmbed = {
+  header:
+    | string
+    | {
+        text: string
+        img?: string
+        url?: string
+      }
+  imageHeader?: string
+  title?: string
+  body: string | TField[]
+  footer?:
+    | string
+    | {
+        text: string
+        img?: string
+      }
+  color?: ColorResolvable
+}
