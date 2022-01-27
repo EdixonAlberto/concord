@@ -94,8 +94,8 @@ class Bot {
   private eventsLoad(): void {
     Bot.client.on('messageCreate', (message: TMessage) => {
       const { content } = new MessageProcessor(message)
-      const response: BotResponse = new BotResponse(message.channel, this._options.color)
       const channels = ChannelsProcessor.cache(Bot.client.channels.cache)
+      const response: BotResponse = new BotResponse(message.channel, this._options.color)
 
       this.commandRun({ content, response, channels })
     })
