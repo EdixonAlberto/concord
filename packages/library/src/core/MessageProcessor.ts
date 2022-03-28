@@ -1,32 +1,32 @@
-import { TContent } from '~ENTITIES/types'
-
 class MessageProcessor {
-  private _content: TContent = {
+  private _content: TBotContent = {
     prefix: '',
+    event: '',
     command: '' as TCommandList,
     params: [],
     /*
       The property "message" is used from a function
       so that its data is not displayed in the log
     */
-    message: () => ({} as TMessage),
-    await: {} as TContent['await']
+    message: () => ({} as TBotMessage),
+    await: {} as TBotContent['await']
   }
 
-  constructor(message: TMessage) {
+  constructor(message: TBotMessage) {
     this.contentExtract(message)
   }
 
-  public get content(): TContent {
+  public get content(): TBotContent {
     return this._content
   }
 
-  private contentExtract(message: TMessage): void {
+  private contentExtract(message: TBotMessage): void {
     const words = message.content.split(' ')
     const prefixComand: string = words.shift() || ''
 
     this._content = {
       prefix: message.content.substring(0, 1),
+      event: 'messageCreate',
       command: prefixComand.substring(1) as TCommandList,
       params: words,
       message: () => message,

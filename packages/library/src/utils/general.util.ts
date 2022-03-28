@@ -7,8 +7,12 @@ export function id(mini: boolean = false): string {
   return id
 }
 
-export function logger(title: string, message: string, dev: boolean = false): void {
+export function logger(title: string, payload: string | object, dev: boolean = false): void {
   if (!dev || global.env.MODE_DEV) {
-    console.log(`${title} ->`, message)
+    if (typeof payload === 'string') console.log(`${title} ->`, payload)
+    else {
+      console.log(title)
+      console.table(payload)
+    }
   }
 }

@@ -22,12 +22,12 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "alias": "tsc-alias",
-    "dev": "gulp dev && yarn alias",
     "build": "gulp build && yarn alias && gulp header",
-    "try-publish": "yarn build && npm publish --dry-run"
+    "try-publish": "yarn build && npm publish --dry-run",
+    "dev": "gulp dev && yarn alias"
   },
   "dependencies": {
-    "discord.js": "^13.3.1",
+    "discord.js": "13.6.0",
     "dotenv": "^10.0.0",
     "uuid": "^8.3.2"
   },

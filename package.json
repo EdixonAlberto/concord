@@ -6,11 +6,12 @@
     "packages/*"
   ],
   "scripts": {
-    "lint": "prettier --write ./packages/**/*.{js,ts}",
+    "clean": "rimraf packages/**/dist && rimraf packages/**/*.tsbuildinfo",
+    "lint": "prettier --write packages/**/*.{js,ts}",
     "concord": "yarn workspace @edixon/concord",
     "testbot": "yarn workspace testbot-ts",
-    "dev": "nodemon --config",
-    "build": "node ./build"
+    "build-deprecated": "node build",
+    "dev": "nodemon --config"
   },
   "nodemonConfig": {
     "ext": ".ts,.js,.env",
@@ -26,10 +27,11 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.15",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "rimraf": "^3.0.2"
   },
   "engines": {
-    "node": "~16.13.0",
+    "node": ">=14.18.2",
     "yarn": "~1.22.0"
   }
 }

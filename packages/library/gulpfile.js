@@ -38,4 +38,4 @@ task('header', () => {
 // RUN TASKS ___________________________________________________________________________________________________________
 task('build', series(format, clean, transpile))
 
-task('dev', series(clean, transpile))
+task('dev', series(transpile))

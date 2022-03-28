@@ -5,7 +5,7 @@ class BotResponse {
   private channel: TextChannel
   private defaultColor: ColorResolvable
 
-  constructor(channel: TChannel, color: ColorResolvable = 'GOLD') {
+  constructor(channel: TBotChannel, color: ColorResolvable = 'GOLD') {
     this.channel = channel as TextChannel
     this.defaultColor = color
   }
@@ -20,8 +20,8 @@ class BotResponse {
   }: TEmbed): Promise<Message | undefined> {
     const embed = new MessageEmbed()
 
-    if (typeof header === 'string') embed.setAuthor(header)
-    else embed.setAuthor(header.text, header?.img, header?.url)
+    if (typeof header === 'string') embed.setAuthor({ name: header })
+    else embed.setAuthor({ name: header.text, iconURL: header?.img, url: header?.url })
 
     if (imageHeader) embed.setThumbnail(imageHeader)
 
@@ -38,8 +38,8 @@ class BotResponse {
       embed.addFields(table)
     }
 
-    if (typeof footer === 'string') embed.setFooter(footer)
-    else embed.setFooter(footer.text, footer?.img)
+    if (typeof footer === 'string') embed.setFooter({ text: footer })
+    else embed.setFooter({ text: footer.text, iconURL: footer?.img })
 
     embed.setColor(color)
 
@@ -48,11 +48,11 @@ class BotResponse {
     })
   }
 
-  public async general(response: string): Promise<TMessage> {
+  public async general(response: string): Promise<TBotMessage> {
     return await this.channel.send(response)
   }
 
-  public async direct(response: string): Promise<TMessage | undefined> {
+  public async direct(response: string): Promise<TBotMessage | undefined> {
     // TODO: encontrar la manera de hacer un reply desde otro canal
     const channel = this.channel as unknown as Message
 

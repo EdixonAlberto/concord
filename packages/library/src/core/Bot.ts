@@ -1,4 +1,4 @@
-import { Client, Intents } from 'discord.js'
+import { Intents, Client, Message } from 'discord.js'
 import { promises as fs } from 'fs'
 import { resolve } from 'path'
 
@@ -6,28 +6,28 @@ import { BotResponse } from '~CORE/BotResponse'
 import { MessageProcessor } from '~CORE/MessageProcessor'
 import * as commandsDefault from '~CORE/commandsDefault'
 import { ChannelsProcessor } from '~CORE/ChannelsProcessor'
-import { id, logger, configLoad } from '~UTILS'
-import { TOptionsDefault, TOptions } from '~ENTITIES/types'
+import { logger, configLoad } from '~UTILS'
+import { TOptionsDefault, TOptions, TEvent, TContent, TCommand } from '~ENTITIES/types'
 
 class Bot {
-  private readonly MESSAGE_CMD_FILE = 'message.command.js'
   private static client: Client
   private static token: string
   private static prefix: string
-  private static tag: string
   private _options: TOptionsDefault
-  private commands: { message?: TCommand } = {}
-  private botID: string
+  private events!: Record<string, TEvent>
+  private commands!: Record<string, TCommand>
+  // private botID: string
 
   constructor(options?: TOptions) {
     this._options = {
       token: options?.token || '',
       prefix: options?.prefix || '',
       color: options?.color || 'GOLD',
-      commandsPath: options?.commandsPath || resolve('src', 'commands'),
+      eventsPath: options?.eventsPath || resolve('dist', 'events'),
+      commandsPath: options?.commandsPath || resolve('dist', 'commands'),
       intentsFlags: options?.intentsFlags || []
     }
-    this.botID = id(true)
+    // this.botID = id(true)
   }
 
   public async start(): Promise<void> {
@@ -38,10 +38,12 @@ class Bot {
       Bot.prefix = this._options.prefix || global.env?.PREFIX || '$'
 
       await this.createClient()
+      await this.eventsLoad()
       await this.commandsLoad()
-      this.eventsLoad()
 
-      logger('BOT', `Instance ${this.botID} created successfully`)
+      this.eventsListen()
+
+      // logger('BOT', `Instance ${this.botID} created successfully`)
       logger('BOT', `Listening prefix ${Bot.prefix}`)
     } catch (error) {
       logger('ERROR-BOT', (error as Error).message)
@@ -56,78 +58,112 @@ class Bot {
         })
 
         await client.login(Bot.token)
+        Bot.client = client
 
-        client.on('ready', () => {
-          Bot.client = client
-          Bot.tag = client!.user!.tag
-          logger('BOT', `Logged in as ${Bot.tag}`)
-          resolve(true)
-        })
+        resolve(true)
       } catch (error) {
         reject(error)
       }
     })
   }
 
+  private async eventsLoad(): Promise<void> {
+    // Load events from files
+    const path = this._options.eventsPath
+    // TODO: mejorar array de eventos para obtenerlos desde discord
+    const eventsFiles = ['ready', 'messageCreate']
+
+    for (const file of eventsFiles) {
+      try {
+        // Import event file
+        const evtPath = resolve(path, `${file}.event.js`)
+        const event = (await import(evtPath)) as Record<string, TEvent>
+        // Create events object
+        this.events = { ...this.events, ...event }
+      } catch (_) {}
+    }
+  }
+
   private async commandsLoad(): Promise<void> {
     // load commands from files
     const path = this._options.commandsPath
-    const messageCmdPath = resolve(path, this.MESSAGE_CMD_FILE)
     const commandFiles = await fs.readdir(path)
-
-    try {
-      await fs.access(messageCmdPath)
-      this.commands.message = (await import(messageCmdPath)) as TCommand
-    } catch (_) {}
 
     // Load message commands
     for (const file of commandFiles) {
       // Verify the name of the command files
       if (file.search(/[a-z0-9]*\.command\.js/i) > -1) {
-        const command = await import(resolve(path, file))
-        // create commands object
+        const cmdPath = resolve(path, file)
+        const command = (await import(cmdPath)) as Record<string, TCommand>
+        // Create commands object
         this.commands = { ...this.commands, ...command }
       }
     }
   }
 
-  private eventsLoad(): void {
-    Bot.client.on('messageCreate', (message: TMessage) => {
+  private eventsListen(): void {
+    Bot.client.on('ready', (client: Client) => {
+      logger('BOT', `logged as ${client.user!.tag}`)
+
+      const content = { event: 'ready' } as TBotContent
+      const channels = ChannelsProcessor.cache(Bot.client.channels.cache)
+
+      this.commandRun({ client, content, channels })
+    })
+
+    Bot.client.on('messageCreate', (message: Message) => {
+      const client = message.client
       const { content } = new MessageProcessor(message)
       const channels = ChannelsProcessor.cache(Bot.client.channels.cache)
       const response: BotResponse = new BotResponse(message.channel, this._options.color)
 
-      this.commandRun({ content, response, channels })
+      this.commandRun({ client, content, channels, response })
     })
   }
 
-  private commandRun({ content, response, channels }: TParams): void {
-    if (content.prefix === Bot.prefix) {
+  private commandRun(params: TBotParams): void {
+    const content = params.content
+
+    if (content.event) {
+      const event = content.event
+      logger('EVENT', event)
+
+      try {
+        if (this.events[event]) {
+          // Execute event dynamically
+          this.events[event]({ client: params.client, channels: params.channels })
+        } else throw new Error(`Incorrect event: "${event}"`)
+      } catch (error) {
+        logger('EVENT', (error as Error).message)
+      }
+    }
+
+    if (content.command && content.prefix === Bot.prefix) {
       logger('COMMAND', JSON.stringify(content), true)
 
-      // create pack commands
+      // Create pack commands
       const commandsPack = {
         ...commandsDefault,
         ...this.commands
       }
 
       try {
-        if (commandsPack[content.command]) {
+        const command = content.command
+
+        if (commandsPack[command]) {
+          // Prepare content to the commands
+          const contentCommand: TContent = {
+            params: content.params,
+            await: content.await,
+            message: content.message
+          }
+
           // Execute command dynamically
-          commandsPack[content.command]({ content, response, channels })
-        } else throw new Error(`Incorrect commnad: "${content.command}"`)
+          commandsPack[command]({ content: contentCommand, response: params.response, channels: params.channels })
+        } else throw new Error(`Incorrect commnad: "${command}"`)
       } catch (error) {
-        response.general('❌ Comando Incorrecto')
+        params.response!.general('❌ Comando Incorrecto')
         logger('COMMAND', (error as Error).message, true)
-      }
-    }
-
-    // Run command message
-    if (this.commands.message) {
-      const messageAuthor = content.message().author.tag
-
-      if (messageAuthor !== Bot.tag) {
-        this.commands.message({ content, response, channels })
       }
     }
   }
