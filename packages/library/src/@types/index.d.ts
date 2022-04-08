@@ -6,36 +6,24 @@ type TEnv = {
   MODE_DEV: boolean
 }
 
+// TODO: mejorar este type
 type TCommandList = 'ping' | string
 
-type TCommand = import('~ENTITIES/types').TCommand
+type TBotChannel = TMessage['channel'] | import('discord.js').Channel
 
-type TParams = import('~ENTITIES/types').TParams
+type TBotMessage = import('~ENTITIES/types').TMessage
 
-type TField = {
-  title: string
-  content: string
-  fieldType?: 'row' | 'column'
+type TBotContent = import('~ENTITIES/types').TContent & {
+  prefix: string
+  event: string
+  command: TCommandList
 }
 
-type TEmbed = {
-  header:
-    | string
-    | {
-        text: string
-        img?: string
-        url?: string
-      }
-  imageHeader?: string
-  title?: string
-  body: string | TField[]
-  footer?:
-    | string
-    | {
-        text: string
-        img?: string
-      }
-  color?: TColor
+type TBotParams = {
+  client: import('discord.js').Client
+  content: TBotContent
+  channels: import('~ENTITIES/types').TChannels
+  response?: import('~CORE/BotResponse').BotResponse
 }
 
 // DECLARATIONS ________________________________________________________________________________________________________
