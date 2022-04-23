@@ -6,7 +6,7 @@ import { BotResponse } from '~CORE/BotResponse'
 import { MessageProcessor } from '~CORE/MessageProcessor'
 import * as commandsDefault from '~CORE/commandsDefault'
 import { ChannelsProcessor } from '~CORE/ChannelsProcessor'
-import { logger, configLoad } from '~UTILS'
+import { logger, configLoad, getConfig } from '~UTILS'
 import { TOptionsDefault, TOptions, TEvent, TContent, TCommand } from '~ENTITIES/types'
 
 class Bot {
@@ -34,8 +34,8 @@ class Bot {
     try {
       await configLoad()
 
-      Bot.token = this._options.token || global.env?.TOKEN || ''
-      Bot.prefix = this._options.prefix || global.env?.PREFIX || '$'
+      Bot.token = this._options.token || getConfig().TOKEN
+      Bot.prefix = this._options.prefix || getConfig().PREFIX
 
       await this.createClient()
       await this.eventsLoad()

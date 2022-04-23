@@ -1,4 +1,5 @@
 import { v4 as uuid } from 'uuid'
+import { getConfig } from '~UTILS'
 
 export function id(mini: boolean = false): string {
   let id = uuid()
@@ -8,7 +9,7 @@ export function id(mini: boolean = false): string {
 }
 
 export function logger(title: string, payload: string | object, dev: boolean = false): void {
-  if (!dev || global.env.MODE_DEV) {
+  if (!dev || getConfig().MODE_DEV) {
     if (typeof payload === 'string') console.log(`${title} ->`, payload)
     else {
       console.log(title)

@@ -1,29 +1,34 @@
-async function configLoad(): Promise<void> {
-  const { access } = await import('fs/promises')
-  const { resolve, basename } = await import('path')
-  const { config } = await import('dotenv')
+export async function configLoad(): Promise<void> {
+  if (typeof process.env.TOKEN === 'undefined') {
+    console.log('LOAD')
 
-  const NODE_ENV = (process.env.NODE_ENV as TNodeEnv) || 'development'
-  let path = ''
+    const { access } = await import('fs/promises')
+    const { resolve, basename } = await import('path')
+    const { config } = await import('dotenv')
 
-  try {
-    await access(resolve('env'))
-    path = resolve('env', `${NODE_ENV}.env`)
-  } catch (_) {
-    path = resolve('.env')
-  } finally {
-    const result = config({ path })
+    const NODE_ENV = (process.env.NODE_ENV as TNodeEnv) || 'development'
+    let path = ''
 
-    if (!result.error) {
-      console.log(`ENV -> Environment "${basename(path)}" loaded successfully`)
-      global.env = process.env as unknown as TEnv
-    }
+    try {
+      await access(resolve('env'))
+      path = resolve('env', `${NODE_ENV}.env`)
+    } catch (_) {
+      path = resolve('.env')
+    } finally {
+      const result = config({ path })
 
-    global.env = {
-      ...global.env,
-      MODE_DEV: NODE_ENV === 'development'
+      if (result.error) throw new Error(`ERROR-ENV -> ${result.error.message}`)
+      else console.log(`ENV -> Environment "${basename(path)}" loaded successfully`)
     }
   }
 }
 
-export { configLoad }
+export function getConfig(): TConfig {
+  const ENV: NodeJS.ProcessEnv = process.env
+
+  return {
+    PREFIX: (ENV.PREFIX as string) || '$',
+    TOKEN: (ENV.TOKEN as string) || '',
+    MODE_DEV: (process.env.NODE_ENV as TNodeEnv) !== 'production'
+  }
+}
