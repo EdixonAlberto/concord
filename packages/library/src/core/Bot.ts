@@ -6,7 +6,7 @@ import { BotResponse } from '~CORE/BotResponse'
 import { MessageProcessor } from '~CORE/MessageProcessor'
 import * as commandsDefault from '~CORE/commandsDefault'
 import { ChannelsProcessor } from '~CORE/ChannelsProcessor'
-import { logger, configLoad } from '~UTILS'
+import { logger, configLoad, getConfig } from '~UTILS'
 import { TOptionsDefault, TOptions, TEvent, TContent, TCommand } from '~ENTITIES/types'
 
 class Bot {
@@ -34,17 +34,17 @@ class Bot {
     try {
       await configLoad()
 
-      Bot.token = this._options.token || global.env?.TOKEN || ''
-      Bot.prefix = this._options.prefix || global.env?.PREFIX || '$'
+      Bot.token = this._options.token || getConfig().TOKEN
+      Bot.prefix = this._options.prefix || getConfig().PREFIX
 
       await this.createClient()
       await this.eventsLoad()
       await this.commandsLoad()
 
-      this.eventsListen()
-
       // logger('BOT', `Instance ${this.botID} created successfully`)
       logger('BOT', `Listening prefix ${Bot.prefix}`)
+
+      this.eventsListen()
     } catch (error) {
       logger('ERROR-BOT', (error as Error).message)
     }
@@ -57,7 +57,7 @@ class Bot {
           intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, ...this._options.intentsFlags]
         })
 
-        await client.login(Bot.token)
+        client.login(Bot.token)
         Bot.client = client
 
         resolve(true)
@@ -103,7 +103,7 @@ class Bot {
 
   private eventsListen(): void {
     Bot.client.on('ready', (client: Client) => {
-      logger('BOT', `logged as ${client.user!.tag}`)
+      logger('BOT', `Logged as ${client.user!.tag}`)
 
       const content = { event: 'ready' } as TBotContent
       const channels = ChannelsProcessor.cache(Bot.client.channels.cache)
@@ -126,15 +126,16 @@ class Bot {
 
     if (content.event) {
       const event = content.event
-      logger('EVENT', event)
 
-      try {
-        if (this.events[event]) {
-          // Execute event dynamically
-          this.events[event]({ client: params.client, channels: params.channels })
-        } else throw new Error(`Incorrect event: "${event}"`)
-      } catch (error) {
-        logger('EVENT', (error as Error).message)
+      if (event !== 'messageCreate' || content.message().author.tag !== params.client.user!.tag) {
+        logger('EVENT', event)
+
+        try {
+          if (this.events[event]) {
+            // Execute event dynamically
+            this.events[event]({ client: params.client, channels: params.channels })
+          } else throw new Error(`Incorrect event: "${event}"`)
+        } catch (_) {}
       }
     }
 

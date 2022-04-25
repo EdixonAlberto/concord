@@ -1,8 +1,8 @@
 type TNodeEnv = 'production' | 'development'
 
-type TEnv = {
-  TOKEN?: string
-  PREFIX?: string
+type TConfig = {
+  TOKEN: string
+  PREFIX: string
   MODE_DEV: boolean
 }
 
@@ -25,7 +25,3 @@ type TBotParams = {
   channels: import('~ENTITIES/types').TChannels
   response?: import('~CORE/BotResponse').BotResponse
 }
-
-// DECLARATIONS ________________________________________________________________________________________________________
-
-declare var env: TEnv
