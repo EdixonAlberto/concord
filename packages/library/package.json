@@ -27,7 +27,7 @@
     "dev": "gulp dev && yarn alias"
   },
   "dependencies": {
-    "discord.js": "13.6.0",
+    "discord.js": "^14.6.0",
     "dotenv": "^10.0.0",
     "uuid": "^8.3.2"
   },

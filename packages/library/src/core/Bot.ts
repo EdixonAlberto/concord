@@ -1,5 +1,6 @@
-import { Intents, Client, Message } from 'discord.js'
+import { IntentsBitField, Client, Message, Partials } from 'discord.js'
 import { promises as fs } from 'fs'
+import { access } from 'fs/promises'
 import { resolve } from 'path'
 
 import { BotResponse } from '~CORE/BotResponse'
@@ -22,7 +23,7 @@ class Bot {
     this._options = {
       token: options?.token || '',
       prefix: options?.prefix || '',
-      color: options?.color || 'GOLD',
+      color: options?.color || 'Gold',
       eventsPath: options?.eventsPath || resolve('dist', 'events'),
       commandsPath: options?.commandsPath || resolve('dist', 'commands'),
       intentsFlags: options?.intentsFlags || []
@@ -42,11 +43,11 @@ class Bot {
       await this.commandsLoad()
 
       // logger('BOT', `Instance ${this.botID} created successfully`)
-      logger('BOT', `Listening prefix ${Bot.prefix}`)
+      logger('BOT', `Listening prefix "${Bot.prefix}"`)
 
       this.eventsListen()
     } catch (error) {
-      logger('ERROR-BOT', (error as Error).message)
+      logger('ERROR-BOT', error)
     }
   }
 
@@ -54,10 +55,17 @@ class Bot {
     return new Promise(async (resolve, reject) => {
       try {
         const client = new Client({
-          intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, ...this._options.intentsFlags]
+          intents: [
+            IntentsBitField.Flags.Guilds,
+            IntentsBitField.Flags.GuildMessages,
+            IntentsBitField.Flags.DirectMessages,
+            IntentsBitField.Flags.MessageContent,
+            ...this._options.intentsFlags
+          ],
+          partials: [Partials.Channel]
         })
 
-        client.login(Bot.token)
+        await client.login(Bot.token)
         Bot.client = client
 
         resolve(true)
@@ -86,19 +94,21 @@ class Bot {
 
   private async commandsLoad(): Promise<void> {
     // load commands from files
-    const path = this._options.commandsPath
-    const commandFiles = await fs.readdir(path)
+    try {
+      const path = this._options.commandsPath
+      const commandFiles = await fs.readdir(path)
 
-    // Load message commands
-    for (const file of commandFiles) {
-      // Verify the name of the command files
-      if (file.search(/[a-z0-9]*\.command\.js/i) > -1) {
-        const cmdPath = resolve(path, file)
-        const command = (await import(cmdPath)) as Record<string, TCommand>
-        // Create commands object
-        this.commands = { ...this.commands, ...command }
+      // Load message commands
+      for (const file of commandFiles) {
+        // Verify the name of the command files
+        if (file.search(/[a-z0-9]*\.command\.js/i) > -1) {
+          const cmdPath = resolve(path, file)
+          const command = (await import(cmdPath)) as Record<string, TCommand>
+          // Create commands object
+          this.commands = { ...this.commands, ...command }
+        }
       }
-    }
+    } catch (_) {}
   }
 
   private eventsListen(): void {
@@ -164,7 +174,7 @@ class Bot {
         } else throw new Error(`Incorrect commnad: "${command}"`)
       } catch (error) {
         params.response!.general('❌ Comando Incorrecto')
-        logger('COMMAND', (error as Error).message, true)
+        logger('COMMAND', error, true)
       }
     }
   }

@@ -1,5 +1,5 @@
 import {
-  Intents,
+  IntentsBitField,
   ColorResolvable,
   Message,
   CollectorFilter,
@@ -20,7 +20,7 @@ export type TOptionsDefault = {
 
 export type TOptions = Partial<TOptionsDefault>
 
-export const FLAGS = Intents.FLAGS
+export const FLAGS = IntentsBitField.Flags
 
 export type TMessage = Message<boolean>
 

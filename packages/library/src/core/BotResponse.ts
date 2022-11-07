@@ -1,11 +1,11 @@
-import { Message, MessageEmbed, EmbedFieldData, ColorResolvable, TextChannel } from 'discord.js'
+import { Message, EmbedBuilder, EmbedField, ColorResolvable, TextChannel } from 'discord.js'
 import { TEmbed, TField } from '~ENTITIES/types'
 
 class BotResponse {
   private channel: TextChannel
   private defaultColor: ColorResolvable
 
-  constructor(channel: TBotChannel, color: ColorResolvable = 'GOLD') {
+  constructor(channel: TBotChannel, color: ColorResolvable = 'Gold') {
     this.channel = channel as TextChannel
     this.defaultColor = color
   }
@@ -18,7 +18,7 @@ class BotResponse {
     footer = '',
     color = this.defaultColor
   }: TEmbed): Promise<Message | undefined> {
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
 
     if (typeof header === 'string') embed.setAuthor({ name: header })
     else embed.setAuthor({ name: header.text, iconURL: header?.img, url: header?.url })
@@ -29,7 +29,7 @@ class BotResponse {
 
     if (typeof body === 'string') embed.setDescription(body)
     else {
-      const table: EmbedFieldData[] = body.map((field: TField) => ({
+      const table: EmbedField[] = body.map((field: TField) => ({
         name: field.title,
         value: field.content,
         inline: (field.fieldType || 'row') === 'column'

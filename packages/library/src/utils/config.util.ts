@@ -17,8 +17,10 @@ export async function configLoad(): Promise<void> {
     } finally {
       const result = config({ path })
 
-      if (result.error) throw new Error(`ERROR-ENV -> ${result.error.message}`)
-      else logger('ENV', `Environment "${basename(path)}" loaded successfully`)
+      if (result.error) {
+        const errorMessage = result.error.message.split(':')[1].trim()
+        logger('ENV', `${errorMessage}, the configuration will be loaded from the bot instance`)
+      } else logger('ENV', `Environment "${basename(path)}" loaded successfully`)
     }
   }
 }
