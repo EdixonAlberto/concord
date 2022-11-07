@@ -1,0 +1,16 @@
+{
+  "name": "testbot",
+  "version": "0.0.1",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "start": "yarn build && node dist"
+  },
+  "dependencies": {
+    "@edixon/concord": "1.7.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.8.4"
+  }
+}
