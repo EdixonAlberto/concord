@@ -9,8 +9,7 @@
     "clean": "rimraf packages/**/dist && rimraf packages/**/*.tsbuildinfo",
     "lint": "prettier --write packages/**/*.{js,ts}",
     "concord": "yarn workspace @edixon/concord",
-    "testbot": "yarn workspace testbot-ts",
-    "build-deprecated": "node build",
+    "testbot": "yarn workspace testbot",
     "dev": "nodemon --config"
   },
   "nodemonConfig": {
