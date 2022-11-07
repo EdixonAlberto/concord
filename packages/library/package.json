@@ -1,7 +1,7 @@
 {
   "name": "@edixon/concord",
   "description": "Framework of Node.js to create Discord bots",
-  "version": "1.7.1",
+  "version": "2.0.0",
   "license": "MIT",
   "private": false,
   "author": {
